@@ -1,0 +1,13 @@
+---
+
+charts:
+  - name: qubership-envoy-gateway
+    chart_file: charts/envoy-gateway/Chart.yaml
+    values_file: charts/envoy-gateway/values.yaml
+    image:
+      - ghcr.io/netcracker/qubership-envoy-api-gateway-transfer:${release}
+  - name: qubership-envoy-gateway-cr
+    chart_file: charts/envoy-gateway-cr/Chart.yaml
+    values_file: charts/envoy-gateway-cr/values.yaml
+    image:
+      - ghcr.io/netcracker/qubership-envoy-api-gateway-transfer:${release}

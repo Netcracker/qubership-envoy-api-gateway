@@ -1,0 +1,10 @@
+{
+  "components": [
+    {
+      "name": "qubership-envoy-api-gateway-transfer",
+      "file": "docker-transfer/Dockerfile",
+      "context": "."
+    }
+  ],
+  "platforms": "linux/amd64,linux/arm64"
+}
