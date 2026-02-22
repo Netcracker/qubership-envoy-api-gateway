@@ -4,9 +4,9 @@ name: Helm Package
 on:
   push:
     branches:
-      - main
-    tags:
-      - 'v*'
+      - '**'
+    paths-ignore:
+      - 'documentation/**'
   workflow_dispatch:
 
 permissions:
