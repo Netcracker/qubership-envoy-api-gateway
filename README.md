@@ -429,10 +429,6 @@ status:
     - ip: internal-alb-waf-1023017451.us-east-1.elb.amazonaws.com
 ```
 
-Or from AWS UI:
-
-![Application Load Balancer](./documentation/images/ALB_DNS.png)
-
 6. Check the availability of the `HTTPRoute` (put particular endpoint into `Host` header):
 
 ```
