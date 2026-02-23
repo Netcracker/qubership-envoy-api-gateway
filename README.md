@@ -360,7 +360,7 @@ external   gateway.envoyproxy.io/gatewayclass-controller   True       42h
 internal   gateway.envoyproxy.io/gatewayclass-controller   True       42h
 ```
 
-The existing `Gateways` (the full name is used due to possible Core Gateway conflict):
+The existing `Gateways`:
 
 ```bash
 kubectl get gateways.gateway.networking.k8s.io -A
@@ -453,20 +453,3 @@ $ curl -v -H "Host: test.service.envoy-gateway" http://internal-alb-waf-10230174
 ## Upgrade
 
 Basically, upgrade procedure similar to installation, except the one thing. All of the CRDs must be upgraded before the other resources in case of native Helm usage.
-
-## Known Issues
-
-The known issues are specified below.
-
-The `GatewayClass` remains after the uninstallation procedure. There is a workaround to delete it by the following command:
-
-```
-kubectl patch gatewayclass <GATEWAYCLASS NAME> --type json --patch='[ { "op": "remove", "path": "/metadata/finalizers" } ]'
-```
-
-## Usage
-
-For more information on usage, refer to the following topics:
-
-- [Manual Load Balancer Configuration](./documentation/LoadBalancer.md)
-- [Load Balancing with Envoy Gateway](./documentation/TCP_UDP_Load_Balancing.md)
