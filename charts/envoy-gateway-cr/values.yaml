@@ -142,6 +142,25 @@ defaultGateways:
     # Additional labels
     labels: {}
 
+upgradeJob:
+  image: ghcr.io/netcracker/qubership-docker-kubectl:0.0.6
+  pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations: []
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - "ALL"
+    seccompProfile:
+      type: RuntimeDefault
+
 # That section must be the same as it's described in `envoy-gateway` chart
 config:
   envoyGateway:
