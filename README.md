@@ -48,11 +48,18 @@ The installation procedure via Helm is given below.
 kubectl create ns envoy-gateway
 ```
 
-3. Navigate in Helm chart directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [Values](#values) section.
-4. Run the installation of the particular chart:
+3. Navigate in `envoy-gateway` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [Values](#envoy-gateway-chart-values) section.
+4. Run the installation of the Envoy Gateway chart:
 
 ```sh
 helm install envoy-gateway . -n envoy-gateway
+```
+
+5. Navigate in `envoy-gateway-cr` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [CR Values](#envoy-gateway-cr-chart-values) section.
+6. Run the installation of the Custom Resources chart:
+
+```sh
+helm install envoy-gateway-cr . -n envoy-gateway
 ```
 
 ### `envoy-gateway` Chart Values
@@ -122,7 +129,7 @@ The `envoy-gateway` values are specified in the below table.
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway"},"external":{"name":"default-external-gateway","ctpName":"enable-proxy-protocol"}}` | Describes default (`internal` and `external`) Gateways resources names |
 | upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
 
-### The `envoy-gateway-cr` Chart Values
+### `envoy-gateway-cr` Chart Values
 
 The `envoy-gateway-cr` values are specified in the below table.
 
