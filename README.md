@@ -55,24 +55,6 @@ kubectl create ns envoy-gateway
 helm install envoy-gateway . -n envoy-gateway
 ```
 
-## Installation via App-deployer
-
-The installation procedure via App-deployer is given below.
-
-To install `envoy-gateway` using onsite AppDeployer, firstly, it is required to deliver the application to onsite nexus using ADG as usual. Then, it is required to configure the application in onsite CMDB as following:
-* Name - `envoy-api-gateway`
-* Registry - your registry where the application was delivered
-* Artifact ID - `prod.platform.ha_envoy-api-gateway`
-* Group ID - `com.netcracker.deploy.product`
-
-Next, it is required to configure the new namespace in your selected cloud in CMDB.
-Insert your `values.yaml` override to deploy parameters of your namespace.
-
-**Note**: Do not specify image in your `values.yaml` if you use App Deployer, because it is automatically passed to chart from deployment descriptor.
-
-Now, you can use `Infrastructure` AppDeployer jobs to deploy envoy gateway chart to your cloud and namespace with configured parameters.
-An example `ARTIFACT_DESCRIPTOR_VERSION` for envoy gateway  chart will look like following: `envoy-api-gateway:release-2025.1-v1.2.4`.
-
 ### `envoy-gateway` Chart Values
 
 The `envoy-gateway` values are specified in the below table.
@@ -123,7 +105,7 @@ The `envoy-gateway` values are specified in the below table.
 | global.images.envoyGateway.image | string | `nil` |  |
 | global.images.envoyGateway.pullPolicy | string | `nil` |  |
 | global.images.envoyGateway.pullSecrets | list | `[]` |  |
-| global.images.ratelimit.image | string | `"artifactorycn.netcracker.com:17064/envoyproxy/ratelimit:99d85510"` |  |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:99d85510"` |  |
 | global.images.ratelimit.pullPolicy | string | `"IfNotPresent"` |  |
 | global.images.ratelimit.pullSecrets | list | `[]` |  |
 | hpa.behavior | object | `{}` |  |
@@ -138,7 +120,7 @@ The `envoy-gateway` values are specified in the below table.
 | topologyInjector.annotations | object | `{}` |  |
 | topologyInjector.enabled | bool | `true` |  |
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway"},"external":{"name":"default-external-gateway","ctpName":"enable-proxy-protocol"}}` | Describes default (`internal` and `external`) Gateways resources names |
-| upgradeJob | object | `{"image":"artifactorycn.netcracker.com:17152/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
+| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
 
 ### The `envoy-gateway-cr` Chart Values
 
@@ -148,8 +130,8 @@ The `envoy-gateway-cr` values are specified in the below table.
 |-----|------|---------|-------------|
 | gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}}},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}}},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}`       | Describes default (`internal` and `external`) Gateways |
-| upgradeJob | object | `{"image":"artifactorycn.netcracker.com:17152/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
-| global.images.envoyGateway.image | string | `"artifactorycn.netcracker.com:17064/envoyproxy/envoy:distroless-v1.36.2"` |  |
+| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
+| global.images.envoyGateway.image | string | `"envoyproxy/envoy:distroless-v1.36.2"` |  |
 | config.envoyGateway | object | `{"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Must be equal to `envoy-gateway` values.yaml |
 
 
@@ -469,11 +451,7 @@ $ curl -v -H "Host: test.service.envoy-gateway" http://internal-alb-waf-10230174
 
 ## Upgrade
 
-Basically, upgrade procedure similar to installation, except the one thing. All of the CRDs must be upgraded before the other resources in case of native Helm and App-deployer usage.
-
-### Upgrade Prior to 2.0.0
-
-The upgrade from 1.6.0 version, lower to 2.0.0, and higher must include installation `envoy-gateway-cr` helm chart after the `envoy-gateway` upgrade. Due to recreation the Gateways, GatewayClasses, and other custom resources during that upgrade it wiil be the downtime. If some custom Gateways are used, the upgrade procedure must include the recreation of these resources.
+Basically, upgrade procedure similar to installation, except the one thing. All of the CRDs must be upgraded before the other resources in case of native Helm usage.
 
 ## Known Issues
 
