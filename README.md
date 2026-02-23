@@ -126,8 +126,6 @@ The `envoy-gateway` values are specified in the below table.
 | service.trafficDistribution | string | `""` |  |
 | topologyInjector.annotations | object | `{}` |  |
 | topologyInjector.enabled | bool | `true` |  |
-| defaultGateways | object | `{"internal":{"name":"default-internal-gateway"},"external":{"name":"default-external-gateway","ctpName":"enable-proxy-protocol"}}` | Describes default (`internal` and `external`) Gateways resources names |
-| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
 
 ### `envoy-gateway-cr` Chart Values
 
