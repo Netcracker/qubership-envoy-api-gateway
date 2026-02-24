@@ -9,6 +9,8 @@ global:
     ratelimit:
       # This is the full image name including the hub, repo, and tag.
       image: "envoyproxy/ratelimit:99d85510"
+    kubectl:
+      image: ghcr.io/netcracker/qubership-docker-kubectl:0.0.6
 # Default GatewayClass and EnvoyProxy specification
 gatewayClasses:
   internal:
@@ -143,7 +145,6 @@ defaultGateways:
     labels: {}
 
 upgradeJob:
-  image: ghcr.io/netcracker/qubership-docker-kubectl:0.0.6
   pullPolicy: IfNotPresent
   resources:
     requests:

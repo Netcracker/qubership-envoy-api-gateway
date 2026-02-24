@@ -18,7 +18,7 @@ spec:
       serviceAccountName: ns-patch 
       containers:
         - name: upgrade-preparation
-          image: {{ template "find_image" (dict "deployName" "kubectl" "SERVICE_NAME" "kubectl" "vals" .Values "default" .Values.upgradeJob.image ) }}
+          image: {{ include "kubectl.image" . }}
           env:
             - name: NAMESPACE
               value: {{ .Release.Namespace }}
