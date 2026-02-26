@@ -21,7 +21,7 @@ The installation prerequisites are listed below.
 
 The current Helm Chart consists of two separate charts. The first one is a community Envoy Gateway, that manages only Envoy Gateway controller. The second chart is a set of NC default custom resources: `EnvoyProxies`, `GatewayClasses`, `Gateways`, and so on. The folder structure is as follows:
 
-```
+```shell
 charts/
 ├── envoy-gateway
 │   ├── charts
