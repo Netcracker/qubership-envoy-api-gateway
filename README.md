@@ -268,7 +268,7 @@ envoy-envoy-gateway-default-internal-gateway-f9db644f   3         3         2   
 
 #### Service Annotations
 
-The `Services` that are being created during `Gateways` reconciliation could have custom annotations. It's usefull in public clouds installations, e.g.:
+The `Services` that are being created during `Gateways` reconciliation could have custom annotations. It's useful in public clouds installations, e.g.:
 
 ```yaml
 gatewayClasses:
@@ -280,9 +280,9 @@ gatewayClasses:
 
 The `service.beta.kubernetes.io/azure-load-balancer-internal: "true"` annotation creates non-public Load Balancer for the particular `Service` in Azure infrastructure.
 
-#### Hostports
+#### HostPorts
 
-There is a posibility to use `hostPort` on Envoy pods. It's more convenient way to send traffic from load balancer to `hostPort` instead of `nodePort`, because `hostPort` is not changed after `Pod` recreation. 
+There is a possibility to use `hostPort` on Envoy pods. It's more convenient way to send traffic from load balancer to `hostPort` instead of `nodePort`, because `hostPort` is not changed after `Pod` recreation.
 
 The `values.yaml` part example is as follows:
 
@@ -397,7 +397,7 @@ The information for AWS Application Load Balancer (ALB) integration for Envoy AP
 
 AWS as a public cloud provider has Web Application Firewall (WAF) in its services scope. It could be attached to ALB only. The [aws-load-balancer-controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller) creates ALBonly for `Ingress` resources. This makes it impossible to send the traffic to Envoy Gateway directly, since it uses only `Services` and aws-load-balancer-controller creates Network Load Balancer (NLB) in that case. To solve this problem, it is necessary to change the type of related `Service` and create `Ingress` that points to Envoy Gateway `Service`. After that measures, NLB gets destroyed and ALB will be created.
 
-### Implementaion Steps
+### Implementation Steps
 
 The implementation steps are specified below.
 

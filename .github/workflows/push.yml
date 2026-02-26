@@ -72,7 +72,7 @@ jobs:
           push: ${{ env.PUSH }}
           tags: ghcr.io/${{ env.GITHUB_GROUP }}/${{ matrix.component.name }}:${{ env.TAG_NAME }}
           provenance: false
-      - uses: actions/delete-package-versions@v5
+      - uses: actions/delete-package-versions@e5bc658cc4c965c472efe991f8beea3981499c55
         with:
           package-name: ${{ matrix.component.name }}
           package-type: 'container'

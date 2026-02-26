@@ -31,7 +31,7 @@ gatewayClasses:
           memory: 1Gi
     envoyService:
       type: ClusterIP
-      # The name of the Service in common case if not needed and makes configuration limited. Empty Service mane allows to create custom Gateways wihout additional steps
+      # The name of the Service in common case if not needed and makes configuration limited. Empty Service name allows to create custom Gateways without additional steps
       name: ""
       externalTrafficPolicy: Local
       annotations: {}
@@ -56,7 +56,7 @@ gatewayClasses:
       # Set ClusterIP to be able to create Application Load Balancer (ALB) on AWS
       # If INFRA_RESTRICTED_ENVIRONMENT variable is set to 'true' the type will be NodePort
       type: LoadBalancer
-      # The name of the Service in common case if not needed and makes configuration limited. Empty Service mane allows to create custom Gateways wihout additional steps
+      # The name of the Service in common case if not needed and makes configuration limited. Empty Service name allows to create custom Gateways without additional steps
       # The name of the Service must not be empty in case of ALB usage, because it's used in the Ingress configuration
       name: ""
       externalTrafficPolicy: Local
