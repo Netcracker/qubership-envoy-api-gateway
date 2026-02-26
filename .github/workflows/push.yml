@@ -60,7 +60,7 @@ jobs:
           access-token: ${{secrets.GITHUB_TOKEN}}
         if: ${{ env.PUSH }}
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25
         with:
           no-cache: true
           context: ${{ matrix.component.context }}
