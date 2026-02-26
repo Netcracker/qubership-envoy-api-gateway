@@ -1,3 +1,4 @@
+extends: default
 ignore: |
   charts/envoy-gateway/charts/gateway-helm/templates/*
   charts/envoy-gateway/templates/*
