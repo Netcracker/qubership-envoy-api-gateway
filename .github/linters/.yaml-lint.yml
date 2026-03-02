@@ -12,6 +12,8 @@ ignore: |
   /charts/envoy-gateway/templates/
   /charts/envoy-gateway-cr/templates/
 
+extends: default
+
 rules:
   braces:
     min-spaces-inside: 1
