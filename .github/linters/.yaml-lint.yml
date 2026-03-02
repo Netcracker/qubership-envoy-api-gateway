@@ -6,6 +6,10 @@
 # ignore-from-file:
 # - .gitignore
 # - .yamlignore
+ignore: |
+  charts/envoy-gateway/charts/gateway-helm/templates/*
+  charts/envoy-gateway/templates/*
+  charts/envoy-gateway-cr/templates/*
 
 rules:
   braces:
@@ -66,7 +70,3 @@ rules:
   truthy: disable
 
 extends: default
-ignore: |
-  charts/envoy-gateway/charts/gateway-helm/templates/*
-  charts/envoy-gateway/templates/*
-  charts/envoy-gateway-cr/templates/*
