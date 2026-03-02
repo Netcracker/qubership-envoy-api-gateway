@@ -1,0 +1,3 @@
+**/charts/envoy-gateway/templates/*.yaml
+**/charts/envoy-gateway/charts/gateway-helm/templates/*.yaml
+**/charts/envoy-gateway-cr/templates/*.yaml
