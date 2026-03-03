@@ -110,7 +110,7 @@ provider:
   kubernetes:
     rateLimitDeployment:
       container:
-        image: {{ include "eg.image" . }}
+        image: {{ include "eg.ratelimit.image" . }}
       {{- with .Values.global.images.ratelimit.pullSecrets }}
       pod:
         imagePullSecrets:
