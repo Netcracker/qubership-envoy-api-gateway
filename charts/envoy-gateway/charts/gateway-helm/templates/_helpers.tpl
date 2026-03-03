@@ -158,7 +158,7 @@ provider:
   kubernetes:
     rateLimitDeployment:
       container:
-        image: "{{ include "eg.ratelimit.image" . }}
+        image: {{ include "eg.ratelimit.image" . }}
       {{- if (or .Values.global.imagePullSecrets .Values.global.images.ratelimit.pullSecrets) }}
       pod:
         {{- include "eg.ratelimit.image.pullSecrets" . | nindent 8 }}
@@ -175,7 +175,7 @@ provider:
                   imagePullPolicy: {{ . }}
       {{- end }}
     shutdownManager:
-      image: "{{ include "eg.image" . }}
+      image: {{ include "eg.image" . }}
 {{- with .Values.config.envoyGateway.extensionApis }}
 extensionApis:
   {{- toYaml . | nindent 2 }}
