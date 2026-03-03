@@ -110,7 +110,7 @@ provider:
   kubernetes:
     rateLimitDeployment:
       container:
-        image: "{{ include "eg.image" . }}
+        image: {{ include "eg.image" . }}
       {{- with .Values.global.images.ratelimit.pullSecrets }}
       pod:
         imagePullSecrets:
@@ -128,7 +128,7 @@ provider:
                   imagePullPolicy: {{ . }}
       {{- end }}
     shutdownManager:
-      image: "{{ include "eg.image" . }}
+      image: {{ include "eg.image" . }}
 {{- end }}
 
 {{/*
