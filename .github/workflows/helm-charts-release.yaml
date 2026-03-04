@@ -166,6 +166,7 @@ jobs:
     permissions:
       contents: write
       packages: write
+      pull-requests: write
     needs: [chart-release, docker-build]
     continue-on-error: false
     runs-on: ubuntu-latest
