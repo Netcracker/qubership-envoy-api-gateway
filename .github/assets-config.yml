@@ -1,0 +1,7 @@
+archives:
+  - source: charts/envoy-gateway
+    outputName: envoy-gateway
+    archiveType: tar.gz
+  - source: charts/envoy-gateway-cr
+    outputName: envoy-gateway-cr
+    archiveType: tar.gz
