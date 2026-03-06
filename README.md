@@ -1,12 +1,12 @@
 This guide provides the installation information for Envoy API Gateway.
 
-# Envoy Gateway Helm Chart
+# Envoy API Gateway Helm Chart
 
 The current Helm chart is based on the [https://github.com/envoyproxy/gateway](https://github.com/envoyproxy/gateway).
 
 ## Overview
 
-The Gateway concept is described in the following page: [Gateway API](https://gateway-api.sigs.k8s.io/). Basically, it is a new generation of Kubernetes Ingress, Load Balancing, and Service Mesh. In comparing with Ingress controller, Gateway controller is more flexible, secure, and mature. The Gateway allows to manage HTTP, gRPC, TCP, and UDP endpoints. Envoy Gateway one of the Gateway API implementation. It dynamically creates the Kubernetes resources that send traffic to backend application. Therefore, it makes impossible to use Envoy Gateway in the production solution with current NC on-premises Kubernetes or OCP4 clusters, because of their Load Balancers that could be managed only manually.
+The Gateway concept is described in the following page: [Gateway API](https://gateway-api.sigs.k8s.io/). Basically, it is a new generation of Kubernetes Ingress, Load Balancing, and Service Mesh. In comparing with Ingress controller, Gateway controller is more flexible, secure, and mature. The Gateway allows to manage HTTP, gRPC, TCP, and UDP endpoints. Envoy Gateway one of the Gateway API implementation. It dynamically creates the Kubernetes resources that send traffic to backend application.
 
 ## Installation Prerequisites
 
@@ -19,7 +19,7 @@ The installation prerequisites are listed below.
 
 ## Charts Structure
 
-The current Helm Chart consists of two separate charts. The first one is a community Envoy Gateway, that manages only Envoy Gateway controller. The second chart is a set of NC default custom resources: `EnvoyProxies`, `GatewayClasses`, `Gateways`, and so on. The folder structure is as follows:
+The current Helm Chart consists of two separate charts. The first one is a community Envoy Gateway, that manages only Envoy Gateway controller. The second chart is a set of custom resources: `EnvoyProxies`, `GatewayClasses`, `Gateways`, and so on. The folder structure is as follows:
 
 ```shell
 charts/
