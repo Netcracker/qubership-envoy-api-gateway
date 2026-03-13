@@ -119,6 +119,22 @@ spec:
     kind: Gateway
     name: {{ .Values.defaultGateways.external.name }}
 ---
+{{- if and .Values.defaultGateways.external.httpsPort .Values.defaultGateways.external.secret.create }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.defaultGateways.external.secret.name }}
+  namespace: '{{ .Release.Namespace }}'
+  labels:
+  {{- include "eg.labels" . | nindent 4 }}
+data:
+  tls.crt: {{ .Values.defaultGateways.external.secret.crt }}
+  tls.key: {{ .Values.defaultGateways.external.secret.key }}
+type: kubernetes.io/tls
+---
+{{- end }}
+
+{{ if .Values.defaultGateways.internal.enabled }}
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: Gateway
 metadata:
@@ -158,22 +174,8 @@ spec:
             name: {{ .Values.defaultGateways.internal.secret.name }} 
         mode: Terminate
     {{- end }}
-{{- if and .Values.defaultGateways.external.httpsPort .Values.defaultGateways.external.secret.create }}
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: {{ .Values.defaultGateways.external.secret.name }}
-  namespace: '{{ .Release.Namespace }}'
-  labels:
-  {{- include "eg.labels" . | nindent 4 }}
-data:
-  tls.crt: {{ .Values.defaultGateways.external.secret.crt }}
-  tls.key: {{ .Values.defaultGateways.external.secret.key }}
-type: kubernetes.io/tls
-{{- end }}
 {{- if and .Values.defaultGateways.internal.httpsPort .Values.defaultGateways.internal.secret.create }}
----
 apiVersion: v1
 kind: Secret
 metadata:
@@ -185,4 +187,6 @@ data:
   tls.crt: {{ .Values.defaultGateways.internal.secret.crt }}
   tls.key: {{ .Values.defaultGateways.internal.secret.key }}
 type: kubernetes.io/tls
+---
+{{- end }}
 {{- end }}

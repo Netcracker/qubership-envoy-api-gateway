@@ -1,3 +1,4 @@
 tmpl.yaml
 charts/envoy-gateway/run.yaml
 charts/envoy-gateway-cr/run.yaml
+*~

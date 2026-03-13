@@ -41,6 +41,8 @@ gatewayClasses:
       name: external
       logging: warn
     envoyDeployment:
+      # Allows to specify custom name for the envoy deployment
+      name: ""
       # Transform Deployment into DaemonSet
       daemonset: false
       replicas: 1
@@ -51,6 +53,11 @@ gatewayClasses:
         limits:
           cpu: 500m
           memory: 1Gi
+      # Tolerations configuration
+      tolerations: []
+      # NodeSelector configuration
+      nodeSelector:
+        kubernetes.io/os: linux
     envoyService:
       # The Kubernetes Service type. Applicable options are: LoadBalancer, ClusterIP, NodePort
       # Set ClusterIP to be able to create Application Load Balancer (ALB) on AWS
@@ -77,6 +84,8 @@ gatewayClasses:
 
 defaultGateways:
   internal:
+    # Allows to disable internal Gateway creation
+    enabled: true
     name: default-internal-gateway
     httpPort: 80
     httpsPort: ""
@@ -137,8 +146,14 @@ defaultGateways:
     #    namespaceLabel:
     #      kubernetes.io/metadata.name: namespace-3
     tls: []
-    # Use `hostPort` on Envoy pods
+    # Use `hostPort` on Envoy pods. It works only for HTTP and HTTPS listeners.
+    # By default, host ports are the same as listener ports,
+    # except when listener port is lower than 1000, in this case default hostPort will be listener port plus 10000.
     hostPorts: false
+    # Allows to override hostPort used for HTTP listener.
+    httpHostPort: ""
+    # Allows to override hostPort used for HTTPS listener.
+    httpsHostPort: ""
     # Additional annotations
     annotations: {}
     # Additional labels
