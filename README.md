@@ -45,21 +45,21 @@ The installation procedure via Helm is given below.
 1. Create namespace for Envoy Gateway, for example:
 
 ```sh
-kubectl create ns envoy-gateway
+kubectl create ns gateway-system
 ```
 
 3. Navigate in `envoy-gateway` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [Values](#envoy-gateway-chart-values) section.
 4. Run the installation of the Envoy Gateway chart:
 
 ```sh
-helm install envoy-gateway . -n envoy-gateway
+helm install envoy-gateway . -n gateway-system
 ```
 
 5. Navigate in `envoy-gateway-cr` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [CR Values](#envoy-gateway-cr-chart-values) section.
 6. Run the installation of the Custom Resources chart:
 
 ```sh
-helm install envoy-gateway-cr . -n envoy-gateway
+helm install envoy-gateway-cr . -n gateway-system
 ```
 
 ### `envoy-gateway` Chart Values
@@ -260,7 +260,7 @@ gatewayClasses:
 the `DaemonsSets` will be created:
 
 ```
-$ kubectl -n envoy-gateway get daemonset
+$ kubectl -n gateway-system get daemonset
 NAME                                                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 envoy-envoy-gateway-default-external-gateway-11a05f95   3         3         2       3            2           <none>          33s
 envoy-envoy-gateway-default-internal-gateway-f9db644f   3         3         2       3            2           <n
@@ -340,7 +340,7 @@ xmeshes.gateway.networking.x-k8s.io                   2026-01-15T07:54:57Z
 Envoy Gateway operator must be up and running:
 
 ```bash
-kubectl -n envoy-gateway get pod
+kubectl -n gateway-system get pod
 
 NAME                                                              READY   STATUS    RESTARTS   AGE
 envoy-gateway-7c865fb9c4-78cvd                                    1/1     Running   0          12h
@@ -365,9 +365,9 @@ The existing `Gateways`:
 ```bash
 kubectl get gateways.gateway.networking.k8s.io -A
 
-NAMESPACE       NAME                       CLASS      ADDRESS         PROGRAMMED   AGE
-envoy-gateway   default-external-gateway   external                   False        12h
-envoy-gateway   default-internal-gateway   internal   172.30.164.73   True         12h
+NAMESPACE        NAME                       CLASS      ADDRESS         PROGRAMMED   AGE
+gateway-system   default-external-gateway   external                   False        12h
+gateway-system   default-internal-gateway   internal   172.30.164.73   True         12h
 ```
 
 The existing `EnvoyProxies`:
@@ -375,9 +375,9 @@ The existing `EnvoyProxies`:
 ```bash
 kubectl get envoyproxy -A
 
-NAMESPACE       NAME       AGE
-envoy-gateway   external   12h
-envoy-gateway   internal   12h
+NAMESPACE        NAME       AGE
+gateway-system   external   12h
+gateway-system   internal   12h
 ```
 
 The existing `ClientTrafficPolicy`
@@ -385,8 +385,8 @@ The existing `ClientTrafficPolicy`
 ```bash
 kubectl get clienttrafficpolicy -A
 
-NAMESPACE       NAME                    AGE
-envoy-gateway   enable-proxy-protocol   12h
+NAMESPACE        NAME                    AGE
+gateway-system   enable-proxy-protocol   12h
 ```
 
 ## AWS Application Load Balancer (ALB) Integration
