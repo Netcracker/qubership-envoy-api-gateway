@@ -56,8 +56,7 @@ gatewayClasses:
       # Tolerations configuration
       tolerations: []
       # NodeSelector configuration
-      nodeSelector:
-        kubernetes.io/os: linux
+      nodeSelector: {}
     envoyService:
       # The Kubernetes Service type. Applicable options are: LoadBalancer, ClusterIP, NodePort
       # Set ClusterIP to be able to create Application Load Balancer (ALB) on AWS
