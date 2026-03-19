@@ -90,6 +90,9 @@ spec:
       envoyDeployment:
         replicas: {{ .Values.gatewayClasses.external.envoyDeployment.replicas }}
       {{- end }}
+        {{- if .Values.gatewayClasses.external.envoyDeployment.name }}
+        name: {{ .Values.gatewayClasses.external.envoyDeployment.name }}
+        {{- end }}
         patch:
           type: StrategicMerge
           value:
@@ -111,64 +114,34 @@ spec:
                     ports:
                     {{- if le (int .Values.defaultGateways.external.httpPort) 1000 }}
                     - containerPort: {{ add 10000 (int .Values.defaultGateways.external.httpPort) }}
-                      hostPort: {{ add 10000 (int .Values.defaultGateways.external.httpPort) }}
+                      hostPort: {{ .Values.defaultGateways.external.httpHostPort | default (add 10000 (int .Values.defaultGateways.external.httpPort)) }}
                     {{- else }}
                     - containerPort: {{ .Values.defaultGateways.external.httpPort }}
-                      hostPort: {{ .Values.defaultGateways.external.httpPort }}
+                      hostPort: {{ .Values.defaultGateways.external.httpHostPort | default .Values.defaultGateways.external.httpPort }}
                     {{- end }}
                       name: http
                       protocol: TCP
                     {{- if .Values.defaultGateways.external.httpsPort }}
                     {{- if le (int .Values.defaultGateways.external.httpsPort) 1000 }}
                     - containerPort: {{ add 10000 (int .Values.defaultGateways.external.httpsPort) }}
-                      hostPort: {{ add 10000 (int .Values.defaultGateways.external.httpsPort) }}
+                      hostPort: {{ .Values.defaultGateways.external.httpsHostPort | default (add 10000 (int .Values.defaultGateways.external.httpsPort)) }}
                     {{- else }}
                     - containerPort: {{ .Values.defaultGateways.external.httpsPort }}
-                      hostPort: {{ .Values.defaultGateways.external.httpsPort }}
+                      hostPort: {{ .Values.defaultGateways.external.httpsHostPort | default .Values.defaultGateways.external.httpsPort }}
                     {{- end }}
                       name: https
                       protocol: TCP
                     {{- end }}
-                    {{- if .Values.defaultGateways.external.tcp }}
-                    {{- range $key, $value := .Values.defaultGateways.external.tcp }}
-                    {{- if le (int $value.port) 1000 }}
-                    - containerPort: {{ add 1000 (int $value.port) }}
-                      hostPort: {{ add 1000 (int $value.port) }}
-                    {{- else }}
-                    - containerPort: {{ $value.port }}
-                      hostPort: {{ $value.port }}
-                    {{- end }}
-                      name: {{ $value.name }}
-                      protocol: TCP
-                    {{- end }}
-                    {{- end }}
-                    {{- if .Values.defaultGateways.external.udp }}
-                    {{- range $key, $value := .Values.defaultGateways.external.udp }}
-                    {{- if le (int $value.port) 1000 }}
-                    - containerPort: {{ add 1000 (int $value.port) }}
-                      hostPort: {{ add 1000 (int $value.port) }}
-                    {{- else }}
-                    - containerPort: {{ $value.port }}
-                      hostPort: {{ $value.port }}
-                    {{- end }}
-                      name: {{ $value.name }}
-                      protocol: UDP
-                    {{- end }}
-                    {{- end }}
-                    {{- if .Values.defaultGateways.external.tls }}
-                    {{- range $key, $value := .Values.defaultGateways.external.tls }}
-                    {{- if le (int $value.port) 1000 }}
-                    - containerPort: {{ add 1000 (int $value.port) }}
-                      hostPort: {{ add 1000 (int $value.port) }}
-                    {{- else }}
-                    - containerPort: {{ $value.port }}
-                      hostPort: {{ $value.port }}
-                    {{- end }}
-                      name: {{ $value.name }}
-                      protocol: TCP
-                    {{- end }}
-                    {{- end }}
             {{- end }}
+        pod:
+          {{- with .Values.gatewayClasses.external.envoyDeployment.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.gatewayClasses.external.envoyDeployment.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
         container:
           image: {{ include "envoy.image" . }}
           resources:
