@@ -292,6 +292,8 @@ defaultGateways:
     hostPorts: true
 ```
 
+By default, host ports are the same as listener ports, except when listener port is lower than 1000, in this case default hostPort will be listener port plus 10000. It makes `containerPort` and `hostPort` equal. HostPorts doesn't work for `tls` listeners.
+
 #### Gateway Configuration
 
 The `config` section must be the same as described in `envoy-gateway` chart. The default version is the following:
