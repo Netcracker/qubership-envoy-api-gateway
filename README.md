@@ -234,7 +234,7 @@ defaultGateways:
           streamIdleTimeout: 5m  
 ```
 
-* `proxyProtocol` enables and disables the ProxyProtocol
+* `proxyProtocol` enables and disables the ProxyProtocol. It affects all of the HTTP, TLS, and TCP routes that are attached to the Gateway
 * `underscoresAction` defines the actions under the HTTP Headers with underscores
 * `ctpName` sets the name of resource
 * `ctpSpec` set all of the `ClientTrafficPolicy` [spec](https://gateway.envoyproxy.io/docs/api/extension_types/#clienttrafficpolicyspec). It overrides the `proxyProtocol` and `underscoresAction` options if they are set in both parts. By default, `ctpSpec` is empty.
