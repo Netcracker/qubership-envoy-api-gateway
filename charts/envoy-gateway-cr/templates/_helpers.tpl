@@ -161,6 +161,6 @@ Kubectl image.
 {{- if .Values.global.images.kubectl.image -}}
 {{- .Values.global.images.kubectl.image }}
 {{- else -}}
-ghcr.io/netcracker/qubership-docker-kubectl:0.0.6
+ghcr.io/netcracker/qubership-docker-kubectl:0.0.7
 {{- end -}}
 {{- end -}}
