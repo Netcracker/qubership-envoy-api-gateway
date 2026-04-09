@@ -109,10 +109,10 @@ The `envoy-gateway` values are specified in the below table.
 | deployment.replicas | int | `1` |  |
 | global.imagePullSecrets | list | `[]` | Global override for image pull secrets |
 | global.imageRegistry | string | `""` | Global override for image registry |
-| global.images.envoyGateway.image | string | `nil` |  |
-| global.images.envoyGateway.pullPolicy | string | `nil` |  |
+| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.7.1` |  |
+| global.images.envoyGateway.pullPolicy | string | `IfNotPresent` |  |
 | global.images.envoyGateway.pullSecrets | list | `[]` |  |
-| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:99d85510"` |  |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:c8765e89"` |  |
 | global.images.ratelimit.pullPolicy | string | `"IfNotPresent"` |  |
 | global.images.ratelimit.pullSecrets | list | `[]` |  |
 | hpa.behavior | object | `{}` |  |
@@ -135,8 +135,11 @@ The `envoy-gateway-cr` values are specified in the below table.
 |-----|------|---------|-------------|
 | gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}}},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}}},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}`       | Describes default (`internal` and `external`) Gateways |
-| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.6","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
-| global.images.envoyGateway.image | string | `"envoyproxy/envoy:distroless-v1.36.2"` |  |
+| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.7","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
+| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.1"` |  |
+| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.1"` |  |
+| global.images.ratelimit.image | string | `"envoyproxy/envoyproxy/ratelimit:c8765e89"` |  |
+| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.7"` |  |
 | config.envoyGateway | object | `{"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Must be equal to `envoy-gateway` values.yaml |
 
 
