@@ -106,14 +106,12 @@ metadata:
   labels:
   {{- include "eg.labels" . | nindent 4 }}
 spec:
-  enableProxyProtocol: {{ .Values.defaultGateways.external.proxyProtocol }}
-  headers:
-    withUnderscoresAction: {{ .Values.defaultGateways.external.underscoresAction }}
-  {{- if .Values.defaultGateways.external.ctpSpec }}
-  {{- with .Values.defaultGateways.external.ctpSpec }}
-  {{- toYaml . | nindent 2 }}
-  {{- end }}
-  {{- end }}
+{{- $ctpDefaults := dict "headers" (dict "withUnderscoresAction" .Values.defaultGateways.external.underscoresAction) }}
+{{- if .Values.defaultGateways.external.proxyProtocol }}
+  {{- $_ := set $ctpDefaults "proxyProtocol" (dict "optional" false) }}
+{{- end }}
+{{- $ctpMerged := mergeOverwrite $ctpDefaults (.Values.defaultGateways.external.ctpSpec | default dict) }}
+{{- toYaml $ctpMerged | nindent 2 }}
   targetRef:
     group: gateway.networking.k8s.io
     kind: Gateway

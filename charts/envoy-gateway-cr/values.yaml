@@ -110,7 +110,8 @@ defaultGateways:
     underscoresAction: RejectRequest
     # Name of ClientTrafficPolicy resource
     ctpName: enable-proxy-protocol
-    # ClientTrafficPolicy `spec` section, it could override the `proxyProtocol` and `underscoresAction` options
+    # ClientTrafficPolicy `spec` section.
+    # Merged with `proxyProtocol` / `underscoresAction` above: same keys in ctpSpec win on conflict.
     ctpSpec: {}
     httpPort: 80
     httpsPort: ""
