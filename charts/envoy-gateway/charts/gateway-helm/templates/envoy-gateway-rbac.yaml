@@ -40,18 +40,18 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
-  name: {{ include "eg.fullname" . }}-envoy-gateway-role
+  name: {{ include "eg.fullname" . }}-envoy-gateway-role:{{ .Release.Namespace }} {{/* # NC modified */}}
 rules:
 {{ include "eg.rbac.cluster" . }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "eg.fullname" . }}-envoy-gateway-rolebinding
+  name: {{ include "eg.fullname" . }}-envoy-gateway-rolebinding:{{ .Release.Namespace }} {{/* # NC modified */}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "eg.fullname" . }}-envoy-gateway-role
+  name: {{ include "eg.fullname" . }}-envoy-gateway-role:{{ .Release.Namespace }} {{/* # NC modified */}}
 subjects:
 - kind: ServiceAccount
   name: 'envoy-gateway'
@@ -62,7 +62,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
-  name: {{ include "eg.fullname" . }}-envoy-gateway-role
+  name: {{ include "eg.fullname" . }}-envoy-gateway-role:{{ .Release.Namespace }} {{/* # NC modified */}}
 rules:
 {{ include "eg.rbac.cluster" . }}
 {{ include "eg.rbac.namespaced" . }}
@@ -70,11 +70,11 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "eg.fullname" . }}-envoy-gateway-rolebinding
+  name: {{ include "eg.fullname" . }}-envoy-gateway-rolebinding:{{ .Release.Namespace }} {{/* # NC modified */}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "eg.fullname" . }}-envoy-gateway-role
+  name: {{ include "eg.fullname" . }}-envoy-gateway-role:{{ .Release.Namespace }} {{/* # NC modified */}}
 subjects:
 - kind: ServiceAccount
   name: 'envoy-gateway'
