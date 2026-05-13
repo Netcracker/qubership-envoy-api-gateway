@@ -310,6 +310,8 @@ config:
       type: Kubernetes
 ```
 
+**Notice**: the `controllerName` field is immutable, so it can't be changed during the `helm upgrade`, only resource removal works in this case
+
 ## Installation Check
 
 Checking installation via ArgoCD is not necessary as ArgoCD checks all of the resources in chart itself.
