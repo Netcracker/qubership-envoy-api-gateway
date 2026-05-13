@@ -15,7 +15,7 @@ The installation prerequisites are listed below.
 * Kubernetes cluster version 1.29+
 * Cluster admin permissions
 
-**Warning**: Currently, OCP4 is not supported due to [the changes in OCP4.19](https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html-single/updating_clusters/index#nw-ingress-gateway-api-manage-succession_updating-cluster-prepare). The Envoy Gateway usage on OCP4 previous to 4.19 leads to complete Envoy Gateway removal during the upgrade from 4.18 to 4.19.
+**Warning**: Currently, OCP4 is not supported due to the changes in OCP4.19. The Envoy Gateway usage on OCP4 previous to 4.19 leads to complete Envoy Gateway removal during the upgrade from 4.18 to 4.19. Check RedHat documentation for more information.
 
 ## Charts Structure
 
