@@ -310,9 +310,72 @@ config:
       type: Kubernetes
 ```
 
-**Notices**:
-* The `controllerName` is quite important parameter because the Envoy Gateway controller identifies the resources (Gateways, HTTPRoutes, etc) that it must process through that option. The best practice is to isolate different Envoy Gateway controllers by uniq `controllerName`.
+**Notes**:
+* The `controllerName` is quite important parameter because the Envoy Gateway controller identifies the resources such as Gateways, HTTPRoutes that it must process through that option. The best practice is to isolate different Envoy Gateway controllers by unique `controllerName`.
 * The `controllerName` field is immutable, so it can't be changed during the `helm upgrade`. Only GatewayClass resource removal works in this case.
+
+### Multiple Controllers on the Same Cluster
+
+Several Envoy Gateway controllers must be separated from one another. You can do this by ensuring the following:
+
+* The controllers must be installed into separated namespaces.
+* The `controllerName` must be uniq for each controller. That parameter must be set in both charts. For instance, the first `envoy-gateway`:
+
+```yaml
+gateway-helm:
+  config:
+    envoyGateway:
+      gateway:
+        controllerName: gateway.envoyproxy.io/gatewayclass-controller-1
+```
+
+the first `envoy-gateway-cr`:
+
+```yaml
+config:
+  envoyGateway:
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller-1
+```
+
+the second `envoy-gateway`:
+
+```yaml
+gateway-helm:
+  config:
+    envoyGateway:
+      gateway:
+        controllerName: gateway.envoyproxy.io/gatewayclass-controller-2
+```
+
+the second `envoy-gateway-cr`:
+
+```yaml
+config:
+  envoyGateway:
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller-2
+```
+
+* The GatewayClasses must have unique names. For instance, the first `envoy-gateway-cr`:
+
+```yaml
+gatewayClasses:
+  internal:
+    name: internal-1
+  external:
+    name: external-1
+```
+
+the second `envoy-gateway-cr`:
+
+```yaml
+gatewayClasses:
+  internal:
+    name: internal-2
+  external:
+    name: external-2
+```
 
 ## Installation Check
 
