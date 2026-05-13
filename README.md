@@ -310,7 +310,9 @@ config:
       type: Kubernetes
 ```
 
-**Notice**: the `controllerName` field is immutable, so it can't be changed during the `helm upgrade`, only resource removal works in this case
+**Notices**:
+* The `controllerName` is quite important parameter because the Envoy Gateway controller identifies the resources (Gateways, HTTPRoutes, etc) that it must process through that option. The best practice is to isolate different Envoy Gateway controllers by uniq `controllerName`.
+* The `controllerName` field is immutable, so it can't be changed during the `helm upgrade`. Only GatewayClass resource removal works in this case.
 
 ## Installation Check
 
