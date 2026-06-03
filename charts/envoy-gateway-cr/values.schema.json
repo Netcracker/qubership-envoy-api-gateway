@@ -1,0 +1,444 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "APPLICATION_NAME": {
+            "type": "string"
+        },
+        "MANAGED_BY": {
+            "type": "string"
+        },
+        "SERVICE_NAME": {
+            "type": "string"
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "envoyGateway": {
+                    "type": "object",
+                    "properties": {
+                        "gateway": {
+                            "type": "object",
+                            "properties": {
+                                "controllerName": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "provider": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "defaultGateways": {
+            "type": "object",
+            "properties": {
+                "external": {
+                    "type": "object",
+                    "properties": {
+                        "annotations": {
+                            "type": "object"
+                        },
+                        "ctpName": {
+                            "type": "string"
+                        },
+                        "ctpSpec": {
+                            "type": "object"
+                        },
+                        "hostPorts": {
+                            "type": "boolean"
+                        },
+                        "httpHostPort": {
+                            "type": "string"
+                        },
+                        "httpPort": {
+                            "type": "integer"
+                        },
+                        "httpsHostPort": {
+                            "type": "string"
+                        },
+                        "httpsPort": {
+                            "type": "string"
+                        },
+                        "labels": {
+                            "type": "object"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "proxyProtocol": {
+                            "type": "boolean"
+                        },
+                        "secret": {
+                            "type": "object",
+                            "properties": {
+                                "create": {
+                                    "type": "boolean"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "tcp": {
+                            "type": "array"
+                        },
+                        "tls": {
+                            "type": "array"
+                        },
+                        "udp": {
+                            "type": "array"
+                        },
+                        "underscoresAction": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "internal": {
+                    "type": "object",
+                    "properties": {
+                        "annotations": {
+                            "type": "object"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "httpPort": {
+                            "type": "integer"
+                        },
+                        "httpsPort": {
+                            "type": "string"
+                        },
+                        "labels": {
+                            "type": "object"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "secret": {
+                            "type": "object",
+                            "properties": {
+                                "create": {
+                                    "type": "boolean"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "gatewayClasses": {
+            "type": "object",
+            "properties": {
+                "external": {
+                    "type": "object",
+                    "properties": {
+                        "envoyDeployment": {
+                            "type": "object",
+                            "properties": {
+                                "daemonset": {
+                                    "type": "boolean"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "nodeSelector": {
+                                    "type": "object"
+                                },
+                                "replicas": {
+                                    "type": "integer"
+                                },
+                                "resources": {
+                                    "type": "object",
+                                    "properties": {
+                                        "limits": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cpu": {
+                                                    "type": "string"
+                                                },
+                                                "memory": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "requests": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cpu": {
+                                                    "type": "string"
+                                                },
+                                                "memory": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "tolerations": {
+                                    "type": "array"
+                                }
+                            }
+                        },
+                        "envoyProxy": {
+                            "type": "object",
+                            "properties": {
+                                "logging": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "envoyService": {
+                            "type": "object",
+                            "properties": {
+                                "annotations": {
+                                    "type": "object"
+                                },
+                                "externalTrafficPolicy": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "ingress": {
+                            "type": "object",
+                            "properties": {
+                                "annotations": {
+                                    "type": "object",
+                                    "properties": {
+                                        "alb.ingress.kubernetes.io/healthcheck-path": {
+                                            "type": "string"
+                                        },
+                                        "alb.ingress.kubernetes.io/healthcheck-port": {
+                                            "type": "string"
+                                        },
+                                        "alb.ingress.kubernetes.io/load-balancer-name": {
+                                            "type": "string"
+                                        },
+                                        "alb.ingress.kubernetes.io/scheme": {
+                                            "type": "string"
+                                        },
+                                        "alb.ingress.kubernetes.io/target-type": {
+                                            "type": "string"
+                                        },
+                                        "kubernetes.io/ingress.class": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "create": {
+                                    "type": "boolean"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "internal": {
+                    "type": "object",
+                    "properties": {
+                        "envoyDeployment": {
+                            "type": "object",
+                            "properties": {
+                                "daemonset": {
+                                    "type": "boolean"
+                                },
+                                "replicas": {
+                                    "type": "integer"
+                                },
+                                "resources": {
+                                    "type": "object",
+                                    "properties": {
+                                        "limits": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cpu": {
+                                                    "type": "string"
+                                                },
+                                                "memory": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "requests": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cpu": {
+                                                    "type": "string"
+                                                },
+                                                "memory": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "envoyProxy": {
+                            "type": "object",
+                            "properties": {
+                                "logging": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "envoyService": {
+                            "type": "object",
+                            "properties": {
+                                "annotations": {
+                                    "type": "object"
+                                },
+                                "externalTrafficPolicy": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "global": {
+            "type": "object",
+            "properties": {
+                "images": {
+                    "type": "object",
+                    "properties": {
+                        "envoy": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "envoyGateway": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "kubectl": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "ratelimit": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "upgradeJob": {
+            "type": "object",
+            "properties": {
+                "nodeSelector": {
+                    "type": "object",
+                    "properties": {
+                        "kubernetes.io/os": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "pullPolicy": {
+                    "type": "string"
+                },
+                "resources": {
+                    "type": "object",
+                    "properties": {
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "securityContext": {
+                    "type": "object",
+                    "properties": {
+                        "allowPrivilegeEscalation": {
+                            "type": "boolean"
+                        },
+                        "capabilities": {
+                            "type": "object",
+                            "properties": {
+                                "drop": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "runAsNonRoot": {
+                            "type": "boolean"
+                        },
+                        "seccompProfile": {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tolerations": {
+                    "type": "array"
+                }
+            }
+        }
+    }
+}
