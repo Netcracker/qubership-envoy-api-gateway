@@ -240,11 +240,21 @@ verbs:
   - delete
   - deletecollection
   - patch
+{{/* # NC modified start*/}}
 - apiGroups:
   - autoscaling
-  - policy
   resources:
   - horizontalpodautoscalers
+  verbs:
+  - create
+  - get
+  - list
+  - delete
+  - deletecollection
+  - patch
+- apiGroups:
+  - policy
+  resources:
   - poddisruptionbudgets
   verbs:
   - create
@@ -253,6 +263,7 @@ verbs:
   - delete
   - deletecollection
   - patch
+{{/* # NC modified end*/}}
 - apiGroups:
   - certificates.k8s.io
   resources:
