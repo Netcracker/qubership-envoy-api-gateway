@@ -43,6 +43,15 @@ spec:
                 {{- if .Chart.AppVersion }}
                 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
                 {{- end }}
+            spec:
+              template:
+                spec:
+                  containers:
+                  - name: envoy
+                    {{- if .Values.gatewayClasses.internal.envoyDeployment.securityContext }}
+                    securityContext:
+                      {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.securityContext | nindent 22 }}
+                    {{- end }}
         container:
           image: {{ include "envoy.image" . }}
           resources:
@@ -105,12 +114,16 @@ spec:
                 {{- if .Chart.AppVersion }}
                 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
                 {{- end }}
-            {{- if .Values.defaultGateways.external.hostPorts }}
             spec:
               template:
                 spec:
                   containers:
                   - name: envoy
+                    {{- if .Values.gatewayClasses.external.envoyDeployment.securityContext }}
+                    securityContext:
+                      {{- toYaml .Values.gatewayClasses.external.envoyDeployment.securityContext | nindent 22 }}
+                    {{- end }}
+                    {{- if .Values.defaultGateways.external.hostPorts }}
                     ports:
                     {{- if le (int .Values.defaultGateways.external.httpPort) 1000 }}
                     - containerPort: {{ add 10000 (int .Values.defaultGateways.external.httpPort) }}
@@ -158,7 +171,7 @@ spec:
                       protocol: UDP
                     {{- end }}
                     {{- end }}
-            {{- end }}
+                    {{- end }}
         {{- if or (.Values.gatewayClasses.external.envoyDeployment.tolerations) (.Values.gatewayClasses.external.envoyDeployment.nodeSelector) }}
         pod:
           {{- with .Values.gatewayClasses.external.envoyDeployment.tolerations }}

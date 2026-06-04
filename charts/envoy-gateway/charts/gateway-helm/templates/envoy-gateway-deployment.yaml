@@ -47,6 +47,14 @@ spec:
       tolerations:
         {{- toYaml . | nindent 6 }}
       {{- end }}
+      securityContext:  {{/* # NC modified */}}
+        runAsNonRoot: true  {{/* # NC modified */}}
+        seccompProfile:  {{/* # NC modified */}}
+          type: RuntimeDefault  {{/* # NC modified */}}
+        {{- if eq (default "" .Values.PAAS_PLATFORM) "KUBERNETES" }}
+        runAsUser: 1000  {{/* # NC modified */}}
+        runAsGroup: 1000  {{/* # NC modified */}}
+        {{- end }}
       containers:
       - args:
         - server
@@ -94,6 +102,8 @@ spec:
         - mountPath: /certs
           name: certs
           readOnly: true
+        - mountPath: /tmp  {{/* # NC modified */}}
+          name: tmp  {{/* # NC modified */}}
       {{- include "eg.image.pullSecrets" . | nindent 6 }}
       {{- with .Values.deployment.priorityClassName }}
       priorityClassName: {{ . | quote }}
@@ -108,3 +118,6 @@ spec:
       - name: certs
         secret:
           secretName: envoy-gateway
+      - name: tmp  {{/* # NC modified */}}
+        emptyDir:  {{/* # NC modified */}}
+          sizeLimit: 100Mi  {{/* # NC modified */}}
