@@ -46,16 +46,23 @@ spec:
             spec:
               template:
                 spec:
+                  volumes:
+                  - name: tmp
+                    emptyDir:
+                      sizeLimit: 100Mi
                   containers:
                   - name: envoy
-                    {{- if .Values.gatewayClasses.internal.envoyDeployment.securityContext }}
-                    securityContext:
-                      {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.securityContext | nindent 22 }}
-                    {{- end }}
+                    volumeMounts:
+                    - name: tmp
+                      mountPath: /tmp
         container:
           image: {{ include "envoy.image" . }}
           resources:
             {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.resources | nindent 12 }}
+          {{- if .Values.gatewayClasses.internal.envoyDeployment.securityContext }}
+          securityContext:
+            {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.securityContext | nindent 12 }}
+          {{- end }}
     type: {{ index .Values "config" "envoyGateway" "provider" "type" }}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -117,12 +124,15 @@ spec:
             spec:
               template:
                 spec:
+                  volumes:
+                  - name: tmp
+                    emptyDir:
+                      sizeLimit: 100Mi
                   containers:
                   - name: envoy
-                    {{- if .Values.gatewayClasses.external.envoyDeployment.securityContext }}
-                    securityContext:
-                      {{- toYaml .Values.gatewayClasses.external.envoyDeployment.securityContext | nindent 22 }}
-                    {{- end }}
+                    volumeMounts:
+                    - name: tmp
+                      mountPath: /tmp
                     {{- if .Values.defaultGateways.external.hostPorts }}
                     ports:
                     {{- if le (int .Values.defaultGateways.external.httpPort) 1000 }}
@@ -187,4 +197,8 @@ spec:
           image: {{ include "envoy.image" . }}
           resources:
             {{- toYaml .Values.gatewayClasses.external.envoyDeployment.resources | nindent 12 }}
+          {{- if .Values.gatewayClasses.external.envoyDeployment.securityContext }}
+          securityContext:
+            {{- toYaml .Values.gatewayClasses.external.envoyDeployment.securityContext | nindent 12 }}
+          {{- end }}
     type: {{ index .Values "config" "envoyGateway" "provider" "type" }}

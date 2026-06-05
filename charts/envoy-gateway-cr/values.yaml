@@ -36,6 +36,7 @@ gatewayClasses:
         capabilities:
           drop:
             - "ALL"
+        readOnlyRootFilesystem: true
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
@@ -68,6 +69,7 @@ gatewayClasses:
         capabilities:
           drop:
             - "ALL"
+        readOnlyRootFilesystem: true
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
