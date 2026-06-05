@@ -65,3 +65,17 @@ kubectl get clienttrafficpolicy -A
 - OCP 4.19+ is **not supported** (upstream Envoy Gateway removal issue)
 - AWS ALB integration requires setting `service.type: ClusterIP` plus an Ingress resource — see README for full config
 - The two charts must be installed in sequence; `envoy-gateway-cr` will fail if the CRDs from `envoy-gateway` are not yet present
+
+## Documentation Update
+
+Each time the @charts/envoy-gateway/values.yaml and @charts/envoy-gateway-cr/values.yaml have changed, update the documentation accordingly.
+
+## Chart Test
+
+Changes in chart must be tested by `helm template`. The fist run with default values.yaml the second must include changes in the following fields:
+* `defaultGateways.external.tcp`
+* `defaultGateways.external.udp`
+* `defaultGateways.external.tls`
+* `gatewayClasses.internal.envoyDeployment.daemonset`
+* `gatewayClasses.external.envoyDeployment.daemonset`
+* `defaultGateways.external.hostPorts`

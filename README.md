@@ -82,6 +82,7 @@ The `envoy-gateway` values are specified in the below table.
 | deployment.envoyGateway.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | deployment.envoyGateway.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | deployment.envoyGateway.securityContext.privileged | bool | `false` |  |
+| deployment.envoyGateway.securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | deployment.envoyGateway.securityContext.runAsGroup | int | `65532` |  |
 | deployment.envoyGateway.securityContext.runAsNonRoot | bool | `true` |  |
 | deployment.envoyGateway.securityContext.runAsUser | int | `65532` |  |
@@ -133,9 +134,9 @@ The `envoy-gateway-cr` values are specified in the below table.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}}},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}}},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
+| gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}`       | Describes default (`internal` and `external`) Gateways |
-| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.7","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
+| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.7","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
 | global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.1"` |  |
 | global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.1"` |  |
 | global.images.ratelimit.image | string | `"envoyproxy/envoyproxy/ratelimit:c8765e89"` |  |
@@ -521,6 +522,40 @@ $ curl -v -H "Host: test.service.envoy-gateway" http://internal-alb-waf-10230174
 <
 ...
 ```
+
+## Security Hardening
+
+All components ship with hardened security defaults out of the box. The following settings are applied uniformly across the Envoy Gateway controller deployment, the certgen Job, the pre-upgrade Job, and every Envoy proxy container:
+
+| Setting | Value | Scope |
+|---------|-------|-------|
+| `runAsNonRoot` | `true` | pod & container |
+| `allowPrivilegeEscalation` | `false` | container |
+| `readOnlyRootFilesystem` | `true` | container |
+| `capabilities.drop` | `["ALL"]` | container |
+| `seccompProfile.type` | `RuntimeDefault` | pod |
+
+Because `readOnlyRootFilesystem: true` is enforced, every component that needs writable scratch space mounts a dedicated `emptyDir` volume at `/tmp` (size-limited to `100Mi` by default).
+
+The Envoy proxy container security context is configurable via `gatewayClasses.internal.envoyDeployment.securityContext` and `gatewayClasses.external.envoyDeployment.securityContext`. The `/tmp` volume size limit is controlled by the corresponding `tmpSizeLimit` field (default `100Mi`):
+
+```yaml
+gatewayClasses:
+  internal:
+    envoyDeployment:
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - "ALL"
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      tmpSizeLimit: 100Mi
+```
+
+On Kubernetes (i.e. `PAAS_PLATFORM=KUBERNETES`), the Envoy Gateway controller pod additionally sets `runAsUser: 1000` and `runAsGroup: 1000`.
 
 ## Upgrade
 
