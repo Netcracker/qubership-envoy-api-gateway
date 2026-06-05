@@ -40,6 +40,7 @@ gatewayClasses:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      tmpSizeLimit: 100Mi
     envoyService:
       type: ClusterIP
       # The name of the Service in common case if not needed and makes configuration limited. Empty Service name allows to create custom Gateways without additional steps
@@ -73,6 +74,7 @@ gatewayClasses:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      tmpSizeLimit: 100Mi
       # Tolerations configuration
       tolerations: []
       # NodeSelector configuration
