@@ -3,95 +3,109 @@
     "type": "object",
     "properties": {
         "APPLICATION_NAME": {
-            "type": "string"
+            "type": "string",
+            "description": "Application name applied as app.kubernetes.io/part-of label on all resources"
         },
         "MANAGED_BY": {
-            "type": "string"
+            "type": "string",
+            "description": "Value for the app.kubernetes.io/managed-by label"
         },
         "SERVICE_NAME": {
-            "type": "string"
+            "type": "string",
+            "description": "Service name used in resource labels and metadata"
+        },
+        "global": {
+            "type": "object",
+            "description": "Global image references shared with the envoy-gateway-cr chart",
+            "properties": {
+                "images": {
+                    "type": "object",
+                    "properties": {
+                        "envoy": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string",
+                                    "description": "Full envoy proxy image reference (registry/repo:tag)"
+                                }
+                            }
+                        },
+                        "envoyGateway": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string",
+                                    "description": "Full Envoy Gateway controller image reference"
+                                }
+                            }
+                        },
+                        "ratelimit": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string",
+                                    "description": "Full rate-limit sidecar image reference"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         "gateway-helm": {
             "type": "object",
+            "description": "Values passed through to the upstream envoyproxy/gateway-helm subchart",
             "properties": {
                 "certgen": {
                     "type": "object",
+                    "description": "Certificate generation job that produces TLS credentials for the gateway controller",
                     "properties": {
                         "job": {
                             "type": "object",
                             "properties": {
                                 "affinity": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Pod affinity rules for the certgen job"
                                 },
                                 "annotations": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Annotations added to the certgen job"
                                 },
                                 "nodeSelector": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Node selector for the certgen job pod"
                                 },
                                 "resources": {
                                     "type": "object",
+                                    "description": "Compute resource requests for the certgen job",
                                     "properties": {
                                         "requests": {
                                             "type": "object",
                                             "properties": {
                                                 "cpu": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "description": "CPU request (e.g. 100m)"
                                                 },
                                                 "memory": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "description": "Memory request (e.g. 256Mi)"
                                                 }
                                             }
                                         }
                                     }
                                 },
                                 "securityContext": {
-                                    "type": "object",
-                                    "properties": {
-                                        "allowPrivilegeEscalation": {
-                                            "type": "boolean"
-                                        },
-                                        "capabilities": {
-                                            "type": "object",
-                                            "properties": {
-                                                "drop": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "privileged": {
-                                            "type": "boolean"
-                                        },
-                                        "readOnlyRootFilesystem": {
-                                            "type": "boolean"
-                                        },
-                                        "runAsGroup": {
-                                            "type": "integer"
-                                        },
-                                        "runAsNonRoot": {
-                                            "type": "boolean"
-                                        },
-                                        "runAsUser": {
-                                            "type": "integer"
-                                        },
-                                        "seccompProfile": {
-                                            "type": "object",
-                                            "properties": {
-                                                "type": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
+                                    "$ref": "#/$defs/containerSecurityContext",
+                                    "description": "Security context for the certgen job container"
                                 },
                                 "tolerations": {
-                                    "type": "array"
+                                    "type": "array",
+                                    "description": "Tolerations for the certgen job pod"
                                 },
                                 "ttlSecondsAfterFinished": {
-                                    "type": "integer"
+                                    "type": "integer",
+                                    "description": "Seconds to retain the Job object after it completes",
+                                    "minimum": 0
                                 }
                             }
                         },
@@ -110,6 +124,7 @@
                 },
                 "config": {
                     "type": "object",
+                    "description": "Envoy Gateway controller configuration",
                     "properties": {
                         "envoyGateway": {
                             "type": "object",
@@ -118,7 +133,8 @@
                                     "type": "object",
                                     "properties": {
                                         "controllerName": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Controller name used to reconcile GatewayClass resources"
                                         }
                                     }
                                 },
@@ -129,7 +145,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "default": {
-                                                    "type": "string"
+                                                    "type": "string",
+                                                    "description": "Default log level for the gateway controller",
+                                                    "enum": ["debug", "info", "warn", "error"]
                                                 }
                                             }
                                         }
@@ -139,7 +157,9 @@
                                     "type": "object",
                                     "properties": {
                                         "type": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Infrastructure provider type",
+                                            "enum": ["Kubernetes"]
                                         }
                                     }
                                 }
@@ -148,37 +168,48 @@
                     }
                 },
                 "createNamespace": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether the subchart should create the gateway namespace"
                 },
                 "deployment": {
                     "type": "object",
                     "properties": {
                         "envoyGateway": {
                             "type": "object",
+                            "description": "Gateway controller container configuration",
                             "properties": {
                                 "image": {
                                     "type": "object",
                                     "properties": {
                                         "repository": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Image repository (overrides global.images.envoyGateway.image)"
                                         },
                                         "tag": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Image tag (overrides global.images.envoyGateway.image)"
                                         }
                                     }
                                 },
                                 "imagePullPolicy": {
-                                    "type": "string"
+                                    "type": "string",
+                                    "description": "Image pull policy; empty string defers to Kubernetes default",
+                                    "enum": ["Always", "IfNotPresent", "Never", ""]
                                 },
                                 "imagePullSecrets": {
-                                    "type": "array"
+                                    "type": "array",
+                                    "description": "Image pull secrets for the gateway controller container"
                                 },
                                 "resources": {
                                     "type": "object",
+                                    "description": "Compute resource requests and limits for the gateway controller",
                                     "properties": {
                                         "limits": {
                                             "type": "object",
                                             "properties": {
+                                                "cpu": {
+                                                    "type": "string"
+                                                },
                                                 "memory": {
                                                     "type": "string"
                                                 }
@@ -198,104 +229,78 @@
                                     }
                                 },
                                 "securityContext": {
-                                    "type": "object",
-                                    "properties": {
-                                        "allowPrivilegeEscalation": {
-                                            "type": "boolean"
-                                        },
-                                        "capabilities": {
-                                            "type": "object",
-                                            "properties": {
-                                                "drop": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string"
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "privileged": {
-                                            "type": "boolean"
-                                        },
-                                        "runAsGroup": {
-                                            "type": "integer"
-                                        },
-                                        "runAsNonRoot": {
-                                            "type": "boolean"
-                                        },
-                                        "runAsUser": {
-                                            "type": "integer"
-                                        },
-                                        "seccompProfile": {
-                                            "type": "object",
-                                            "properties": {
-                                                "type": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
+                                    "$ref": "#/$defs/containerSecurityContext",
+                                    "description": "Security context for the gateway controller container"
                                 }
                             }
                         },
                         "pod": {
                             "type": "object",
+                            "description": "Pod-level configuration for the gateway controller",
                             "properties": {
                                 "affinity": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Pod affinity and anti-affinity rules"
                                 },
                                 "annotations": {
                                     "type": "object",
-                                    "properties": {
-                                        "prometheus.io/port": {
-                                            "type": "string"
-                                        },
-                                        "prometheus.io/scrape": {
-                                            "type": "string"
-                                        }
-                                    }
+                                    "description": "Annotations added to the gateway controller pod"
                                 },
                                 "labels": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Additional labels added to the gateway controller pod"
                                 },
                                 "nodeSelector": {
-                                    "type": "object"
+                                    "type": "object",
+                                    "description": "Node selector for the gateway controller pod"
                                 },
                                 "tolerations": {
-                                    "type": "array"
+                                    "type": "array",
+                                    "description": "Tolerations for the gateway controller pod"
                                 },
                                 "topologySpreadConstraints": {
-                                    "type": "array"
+                                    "type": "array",
+                                    "description": "Topology spread constraints for the gateway controller pod"
                                 }
                             }
                         },
                         "ports": {
                             "type": "array",
+                            "description": "Service ports exposed by the gateway controller",
                             "items": {
                                 "type": "object",
+                                "required": ["name", "port", "targetPort"],
                                 "properties": {
                                     "name": {
                                         "type": "string"
                                     },
                                     "port": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 65535
                                     },
                                     "targetPort": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 65535
                                     }
                                 }
                             }
                         },
                         "priorityClassName": {
-                            "type": "null"
+                            "type": ["string", "null"],
+                            "description": "Priority class name for the gateway controller pod"
                         },
                         "replicas": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Number of gateway controller replicas",
+                            "minimum": 0
                         }
                     }
                 },
                 "global": {
                     "type": "object",
+                    "description": "Subchart-level image and RBAC configuration",
                     "properties": {
                         "images": {
                             "type": "object",
@@ -307,7 +312,9 @@
                                             "type": "string"
                                         },
                                         "pullPolicy": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Image pull policy for the gateway controller",
+                                            "enum": ["Always", "IfNotPresent", "Never"]
                                         },
                                         "pullSecrets": {
                                             "type": "array"
@@ -321,7 +328,9 @@
                                             "type": "string"
                                         },
                                         "pullPolicy": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "description": "Image pull policy for the rate-limit sidecar",
+                                            "enum": ["Always", "IfNotPresent", "Never"]
                                         },
                                         "pullSecrets": {
                                             "type": "array"
@@ -334,62 +343,92 @@
                             "type": "object",
                             "properties": {
                                 "create": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Whether to create ClusterRole and ClusterRoleBinding resources"
                                 }
                             }
                         }
                     }
                 },
                 "kubernetesClusterDomain": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Kubernetes cluster domain used for internal DNS (default: cluster.local)"
                 },
                 "podDisruptionBudget": {
                     "type": "object",
+                    "description": "PodDisruptionBudget for the gateway controller",
                     "properties": {
                         "minAvailable": {
-                            "type": "integer"
+                            "type": "integer",
+                            "description": "Minimum number of available pods during disruptions",
+                            "minimum": 0
                         }
                     }
                 },
                 "service": {
                     "type": "object",
+                    "description": "Service configuration for the gateway controller",
                     "properties": {
                         "annotations": {
-                            "type": "object"
+                            "type": "object",
+                            "description": "Annotations added to the gateway controller Service"
                         }
                     }
                 }
             }
-        },
-        "global": {
+        }
+    },
+    "$defs": {
+        "containerSecurityContext": {
             "type": "object",
+            "description": "Kubernetes container security context",
             "properties": {
-                "images": {
+                "allowPrivilegeEscalation": {
+                    "type": "boolean"
+                },
+                "capabilities": {
                     "type": "object",
                     "properties": {
-                        "envoy": {
-                            "type": "object",
-                            "properties": {
-                                "image": {
-                                    "type": "string"
-                                }
+                        "drop": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
                             }
                         },
-                        "envoyGateway": {
-                            "type": "object",
-                            "properties": {
-                                "image": {
-                                    "type": "string"
-                                }
+                        "add": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
                             }
+                        }
+                    }
+                },
+                "privileged": {
+                    "type": "boolean"
+                },
+                "readOnlyRootFilesystem": {
+                    "type": "boolean"
+                },
+                "runAsNonRoot": {
+                    "type": "boolean"
+                },
+                "runAsUser": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "runAsGroup": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "seccompProfile": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": ["RuntimeDefault", "Localhost", "Unconfined"]
                         },
-                        "ratelimit": {
-                            "type": "object",
-                            "properties": {
-                                "image": {
-                                    "type": "string"
-                                }
-                            }
+                        "localhostProfile": {
+                            "type": "string"
                         }
                     }
                 }
