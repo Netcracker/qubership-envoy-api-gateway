@@ -70,6 +70,10 @@ kubectl get clienttrafficpolicy -A
 
 Each time the @charts/envoy-gateway/values.yaml and @charts/envoy-gateway-cr/values.yaml have changed, update the documentation accordingly.
 
+## Schema update
+
+Each time the @charts/envoy-gateway/values.yaml and @charts/envoy-gateway-cr/values.yaml have changed, the @charts/envoy-gateway/values.schema.json and @charts/envoy-gateway-cr/values.schema.json must be updates accordingly.
+
 ## Chart Test
 
 Changes in chart must be tested by `helm template`. The fist run with default values.yaml the second must include changes in the following fields:
