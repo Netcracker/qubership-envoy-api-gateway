@@ -177,13 +177,13 @@ defaultGateways:
   external:
     tls:
       - name: tls-1
-        port: 4443
+        port: 443
         hostname: namespace-3.cluster.example
         namespaceLabel:
           kubernetes.io/metadata.name: namespace-3
 ```
 
-* `port` must defer to HTTPS listeners ports, if they are used at the same time.
+* `port` could be the same as HTTPS listener port, if they are used at the same time. Pay attention to the existing [issue](https://github.com/envoyproxy/gateway/issues/7866)
 * `namespaceLabel` could be `key: value` notation to allow particular namespaces label or `All` string to allow routes from all of the namespaces.
 
 #### TCP and UDP Listeners Settings

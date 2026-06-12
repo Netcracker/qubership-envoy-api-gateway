@@ -161,8 +161,7 @@ defaultGateways:
     # TLS Passthrough listeners list e.g.:
     #tls:
     #  - name: tls-1
-    #    # Port must differ from `httpsPort` above
-    #    port: 4443
+    #    port: 443
     #    hostname: namespace-3.cluster.example
     #    # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
     #    namespaceLabel:
