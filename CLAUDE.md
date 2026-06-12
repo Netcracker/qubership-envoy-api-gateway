@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This topic provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What This Project Is
 
@@ -10,7 +10,7 @@ There is no application source code — this repo is purely Helm charts, CI/CD w
 
 ## Two-Chart Architecture
 
-The deployment requires two interdependent charts installed in order:
+The deployment requires two interdependent charts installed in the following order:
 
 1. **`charts/envoy-gateway/`** — installs the Envoy Gateway controller and CRDs. Wraps the community `gateway-helm` chart (pinned in `Chart.yaml`) and configures it via `values.yaml`.
 
