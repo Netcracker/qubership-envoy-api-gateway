@@ -3,6 +3,8 @@ kind: EnvoyProxy
 metadata:
   name: {{ .Values.gatewayClasses.internal.envoyProxy.name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-4"
   labels:
   {{- include "eg.labels" . | nindent 4 }}
 spec:
@@ -70,6 +72,8 @@ kind: EnvoyProxy
 metadata:
   name: {{ .Values.gatewayClasses.external.envoyProxy.name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-4"
   labels:
   {{- include "eg.labels" . | nindent 4 }}
 spec:
