@@ -31,6 +31,16 @@ gatewayClasses:
         limits:
           cpu: 500m
           memory: 1Gi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - "ALL"
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      tmpSizeLimit: 100Mi
     envoyService:
       type: ClusterIP
       # The name of the Service in common case if not needed and makes configuration limited. Empty Service name allows to create custom Gateways without additional steps
@@ -55,6 +65,16 @@ gatewayClasses:
         limits:
           cpu: 500m
           memory: 1Gi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - "ALL"
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      tmpSizeLimit: 100Mi
       # Tolerations configuration
       tolerations: []
       # NodeSelector configuration
@@ -173,6 +193,7 @@ upgradeJob:
   securityContext:
     runAsNonRoot: true
     allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
     capabilities:
       drop:
         - "ALL"

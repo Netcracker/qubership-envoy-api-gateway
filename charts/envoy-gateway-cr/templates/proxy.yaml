@@ -45,10 +45,26 @@ spec:
                 {{- if .Chart.AppVersion }}
                 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
                 {{- end }}
+            spec:
+              template:
+                spec:
+                  volumes:
+                  - name: tmp
+                    emptyDir:
+                      sizeLimit: {{ .Values.gatewayClasses.internal.envoyDeployment.tmpSizeLimit }}
+                  containers:
+                  - name: envoy
+                    volumeMounts:
+                    - name: tmp
+                      mountPath: /tmp
         container:
           image: {{ include "envoy.image" . }}
           resources:
             {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.resources | nindent 12 }}
+          {{- if .Values.gatewayClasses.internal.envoyDeployment.securityContext }}
+          securityContext:
+            {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.securityContext | nindent 12 }}
+          {{- end }}
     type: {{ index .Values "config" "envoyGateway" "provider" "type" }}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -109,12 +125,19 @@ spec:
                 {{- if .Chart.AppVersion }}
                 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
                 {{- end }}
-            {{- if .Values.defaultGateways.external.hostPorts }}
             spec:
               template:
                 spec:
+                  volumes:
+                  - name: tmp
+                    emptyDir:
+                      sizeLimit: {{ .Values.gatewayClasses.external.envoyDeployment.tmpSizeLimit }}
                   containers:
                   - name: envoy
+                    volumeMounts:
+                    - name: tmp
+                      mountPath: /tmp
+                    {{- if .Values.defaultGateways.external.hostPorts }}
                     ports:
                     {{- if le (int .Values.defaultGateways.external.httpPort) 1000 }}
                     - containerPort: {{ add 10000 (int .Values.defaultGateways.external.httpPort) }}
@@ -162,7 +185,7 @@ spec:
                       protocol: UDP
                     {{- end }}
                     {{- end }}
-            {{- end }}
+                    {{- end }}
         {{- if or (.Values.gatewayClasses.external.envoyDeployment.tolerations) (.Values.gatewayClasses.external.envoyDeployment.nodeSelector) }}
         pod:
           {{- with .Values.gatewayClasses.external.envoyDeployment.tolerations }}
@@ -178,4 +201,8 @@ spec:
           image: {{ include "envoy.image" . }}
           resources:
             {{- toYaml .Values.gatewayClasses.external.envoyDeployment.resources | nindent 12 }}
+          {{- if .Values.gatewayClasses.external.envoyDeployment.securityContext }}
+          securityContext:
+            {{- toYaml .Values.gatewayClasses.external.envoyDeployment.securityContext | nindent 12 }}
+          {{- end }}
     type: {{ index .Values "config" "envoyGateway" "provider" "type" }}

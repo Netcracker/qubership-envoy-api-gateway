@@ -15,7 +15,11 @@ spec:
         app.kubernetes.io/component: ns-patch 
     spec:
       restartPolicy: Never
-      serviceAccountName: ns-patch 
+      serviceAccountName: ns-patch
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: upgrade-preparation
           image: {{ include "kubectl.image" . }}
@@ -50,4 +54,11 @@ spec:
           {{- if .Values.upgradeJob.securityContext }}
           securityContext: {{ toYaml .Values.upgradeJob.securityContext | nindent 12 }}
           {{- end }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 100Mi
 {{ end }}
