@@ -9,6 +9,8 @@ global:
       image: "envoyproxy/gateway:v1.7.3"
     ratelimit:
       image: "envoyproxy/ratelimit:05c08d03"
+    kubectl:
+      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
 gateway-helm:
   # The global settings for the Envoy Gateway Helm chart.
   # These values will be used if the values are not overridden in the other sections.
@@ -131,3 +133,30 @@ gateway-helm:
     rbac:
       annotations: {}
       labels: {}
+
+defaultGateways:
+  internal:
+    name: default-internal-gateway
+  external:
+    name: default-external-gateway
+    ctpName: enable-proxy-protocol
+
+upgradeJob:
+  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
+  pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations: []
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - "ALL"
+    seccompProfile:
+      type: RuntimeDefault
+    readOnlyRootFilesystem: true
