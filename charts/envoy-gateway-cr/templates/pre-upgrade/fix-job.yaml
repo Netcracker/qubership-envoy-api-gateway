@@ -19,7 +19,7 @@ spec:
       containers:
         - name: create
           image: {{ include "kubectl.image" . }}
-          imagePullPolicy: {{ .Values.upgradeJob.pullPolicy }}
+          imagePullPolicy: {{ .Values.fixJob.pullPolicy }}
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -62,18 +62,18 @@ spec:
               done
 
               echo "$(date +%FT%H:%M:%S%:z) The Job is done"
-          {{- if .Values.upgradeJob.resources }}
-          resources: {{ toYaml .Values.upgradeJob.resources | nindent 12 }}
+          {{- if .Values.fixJob.resources }}
+          resources: {{ toYaml .Values.fixJob.resources | nindent 12 }}
           {{- end }}
-          {{- if .Values.upgradeJob.securityContext }}
-          securityContext: {{ toYaml .Values.upgradeJob.securityContext | nindent 12 }}
+          {{- if .Values.fixJob.securityContext }}
+          securityContext: {{ toYaml .Values.fixJob.securityContext | nindent 12 }}
           {{- end }}
       restartPolicy: OnFailure
       serviceAccountName: pre-upgrade
-    {{- if .Values.upgradeJob.nodeSelector }}
-      nodeSelector: {{ toYaml .Values.upgradeJob.nodeSelector | nindent 8 }}
+    {{- if .Values.fixJob.nodeSelector }}
+      nodeSelector: {{ toYaml .Values.fixJob.nodeSelector | nindent 8 }}
     {{- end }}
-    {{- if .Values.upgradeJob.tolerations }}
-      tolerations: {{ toYaml .Values.upgradeJob.tolerations | nindent 8 }}
+    {{- if .Values.fixJob.tolerations }}
+      tolerations: {{ toYaml .Values.fixJob.tolerations | nindent 8 }}
     {{- end }}
 {{- end }}
