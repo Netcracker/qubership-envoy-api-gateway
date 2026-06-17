@@ -72,7 +72,7 @@ Each time the @charts/envoy-gateway/values.yaml and @charts/envoy-gateway-cr/val
 
 ## Schema update
 
-Each time the @charts/envoy-gateway/values.yaml and @charts/envoy-gateway-cr/values.yaml have changed, the @charts/envoy-gateway/values.schema.json and @charts/envoy-gateway-cr/values.schema.json must be updates accordingly.
+Each time the @charts/envoy-gateway/values.yaml and @charts/envoy-gateway-cr/values.yaml have changed, the @charts/envoy-gateway/values.schema.json and @charts/envoy-gateway-cr/values.schema.json must be updated accordingly.
 
 ## Chart Test
 

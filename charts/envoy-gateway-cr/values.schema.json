@@ -555,6 +555,49 @@
                     "$ref": "#/$defs/containerSecurityContext"
                 }
             }
+        },
+        "fixJob": {
+            "type": "object",
+            "description": "Pre-upgrade Job (ArgoCD only) that deletes orphaned hook-managed Gateways and ClientTrafficPolicies",
+            "properties": {
+                "image": {
+                    "type": "string",
+                    "description": "kubectl image used by the fix job; overrides global.images.kubectl.image"
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "Image pull policy for the kubectl container",
+                    "enum": ["Always", "IfNotPresent", "Never"]
+                },
+                "resources": {
+                    "type": "object",
+                    "description": "Compute resource requests for the fix job",
+                    "properties": {
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "nodeSelector": {
+                    "type": "object",
+                    "description": "Node selector for the fix job pod"
+                },
+                "tolerations": {
+                    "type": "array",
+                    "description": "Tolerations for the fix job pod"
+                },
+                "securityContext": {
+                    "$ref": "#/$defs/containerSecurityContext"
+                }
+            }
         }
     },
     "$defs": {
