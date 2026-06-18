@@ -141,3 +141,14 @@ The name of the Envoy image.
 envoyproxy/envoy:v1.26-latest
 {{- end -}}
 {{- end -}}
+
+{{/*
+Kubectl image.
+*/}}
+{{- define "kubectl.image" -}}
+{{- if .Values.global.images.kubectl.image -}}
+{{- .Values.global.images.kubectl.image }}
+{{- else -}}
+ghcr.io/netcracker/qubership-docker-kubectl:0.0.8
+{{- end -}}
+{{- end -}}

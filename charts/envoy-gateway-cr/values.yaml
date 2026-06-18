@@ -12,7 +12,7 @@ global:
       # This is the full image name including the hub, repo, and tag.
       image: "envoyproxy/ratelimit:05c08d03"
     kubectl:
-      image: ghcr.io/netcracker/qubership-docker-kubectl:0.0.8
+      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
 # Default GatewayClass and EnvoyProxy specification
 gatewayClasses:
   internal:
@@ -207,3 +207,23 @@ config:
       controllerName: gateway.envoyproxy.io/gatewayclass-controller
     provider:
       type: Kubernetes
+
+fixJob:
+  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
+  pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  nodeSelector:
+    kubernetes.io/os: linux
+  tolerations: []
+  securityContext:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - "ALL"
+    seccompProfile:
+      type: RuntimeDefault
+    readOnlyRootFilesystem: true

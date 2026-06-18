@@ -47,8 +47,88 @@
                                     "description": "Full rate-limit sidecar image reference"
                                 }
                             }
+                        },
+                        "kubectl": {
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "type": "string",
+                                    "description": "kubectl image used by the pre-upgrade Job"
+                                }
+                            }
                         }
                     }
+                }
+            }
+        },
+        "defaultGateways": {
+            "type": "object",
+            "description": "Gateway and ClientTrafficPolicy names referenced by the pre-upgrade Job",
+            "properties": {
+                "internal": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the default internal Gateway resource"
+                        }
+                    }
+                },
+                "external": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the default external Gateway resource"
+                        },
+                        "ctpName": {
+                            "type": "string",
+                            "description": "Name of the ClientTrafficPolicy resource"
+                        }
+                    }
+                }
+            }
+        },
+        "upgradeJob": {
+            "type": "object",
+            "description": "Pre-upgrade Job that deletes hook-managed resources so they can be recreated without hooks",
+            "properties": {
+                "image": {
+                    "type": "string",
+                    "description": "kubectl image used by the upgrade job; overrides global.images.kubectl.image"
+                },
+                "pullPolicy": {
+                    "type": "string",
+                    "description": "Image pull policy for the kubectl container",
+                    "enum": ["Always", "IfNotPresent", "Never"]
+                },
+                "resources": {
+                    "type": "object",
+                    "description": "Compute resource requests for the upgrade job",
+                    "properties": {
+                        "requests": {
+                            "type": "object",
+                            "properties": {
+                                "cpu": {
+                                    "type": "string"
+                                },
+                                "memory": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "nodeSelector": {
+                    "type": "object",
+                    "description": "Node selector for the upgrade job pod"
+                },
+                "tolerations": {
+                    "type": "array",
+                    "description": "Tolerations for the upgrade job pod"
+                },
+                "securityContext": {
+                    "$ref": "#/$defs/containerSecurityContext"
                 }
             }
         },
