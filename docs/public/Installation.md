@@ -60,7 +60,7 @@ The `envoy-gateway` values are specified in the below table.
 
 | Key | Type | Default | Description |
 | ----- | ------ | --------- | ------------- |
-| certgen | object | See the example below | Certgen is used to generate the certificates required by EnvoyGateway. If you want to construct a custom certificate, you can generate a custom certificate through Cert-Manager before installing EnvoyGateway. Certgen will not overwrite the custom certificate. Please do not manually modify `values.yaml` to disable certgen, it may cause issues in the expected working of EnvoyGateway OIDC, OAuth2, and so on. |
+| certgen | object | See the example below | Generates certificates required by EnvoyGateway. For custom certificates, generate them from your CA and store them in a Secret mounted to the component. |
 | config.envoyGateway | object | `{"extensionApis":{},"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"logging":{"level":{"default":"info"}},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Visit [](https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway) to view all options. |
 | createNamespace | bool | `false` | |
 | deployment.annotations | object | `{}` | |
