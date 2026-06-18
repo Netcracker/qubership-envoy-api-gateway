@@ -40,15 +40,15 @@ The installation procedure via Helm is given below.
 kubectl create ns gateway-system
 ```
 
-3. Navigate in `envoy-gateway` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [Values](#envoy-gateway-chart-values) section.
-4. Run the installation of the Envoy Gateway chart:
+2. Navigate in `envoy-gateway` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [Values](#envoy-gateway-chart-values) section.
+3. Run the installation of the Envoy Gateway chart:
 
 ```sh
 helm install envoy-gateway . -n gateway-system
 ```
 
-5. Navigate in `envoy-gateway-cr` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [CR Values](#envoy-gateway-cr-chart-values) section.
-6. Run the installation of the Custom Resources chart:
+4. Navigate in `envoy-gateway-cr` directory and change the configuration in `values.yaml` as it is needed. Full values options list is described in [CR Values](#envoy-gateway-cr-chart-values) section.
+5. Run the installation of the Custom Resources chart:
 
 ```sh
 helm install envoy-gateway-cr . -n gateway-system
@@ -102,10 +102,10 @@ The `envoy-gateway` values are specified in the below table.
 | deployment.replicas | int | `1` |  |
 | global.imagePullSecrets | list | `[]` | Global override for image pull secrets |
 | global.imageRegistry | string | `""` | Global override for image registry |
-| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.7.1` |  |
+| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.7.3` |  |
 | global.images.envoyGateway.pullPolicy | string | `IfNotPresent` |  |
 | global.images.envoyGateway.pullSecrets | list | `[]` |  |
-| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:c8765e89"` |  |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:05c08d03"` |  |
 | global.images.ratelimit.pullPolicy | string | `"IfNotPresent"` |  |
 | global.images.ratelimit.pullSecrets | list | `[]` |  |
 | hpa.behavior | object | `{}` |  |
@@ -128,11 +128,11 @@ The `envoy-gateway-cr` values are specified in the below table.
 |-----|------|---------|-------------|
 | gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}`       | Describes default (`internal` and `external`) Gateways |
-| upgradeJob | object | `{"image":"ghcr.io/netcracker/qubership-docker-kubectl:0.0.7","pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
-| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.1"` |  |
-| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.1"` |  |
-| global.images.ratelimit.image | string | `"envoyproxy/envoyproxy/ratelimit:c8765e89"` |  |
-| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.7"` |  |
+| upgradeJob | object | `{"pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
+| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.3"` |  |
+| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.2"` |  |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:05c08d03"` |  |
+| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"` |  |
 | config.envoyGateway | object | `{"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Must be equal to `envoy-gateway` values.yaml |
 
 
@@ -253,7 +253,7 @@ gatewayClasses:
       daemonset: true
 ```
 
-the `DaemonsSets` will be created:
+the `DaemonSets` will be created:
 
 ```
 $ kubectl -n gateway-system get daemonset
@@ -401,7 +401,7 @@ The implementation steps are specified below.
 ```
 
 4. Install the Envoy Gateway.
-5. Check the [availability of the HTTPRoute](docs/public/Troubleshooting.md#)
+5. Check the [availability of the HTTPRoute](Troubleshooting.md#httproute)
 
 ## Security Hardening
 

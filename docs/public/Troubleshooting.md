@@ -134,15 +134,6 @@ status:
     - ip: internal-alb-waf-1023017451.us-east-1.elb.amazonaws.com
 ```
 
-5. Get the URL from Ingress status in the Envoy Gateway namespace:
-
-```yaml
-status:
-  loadBalancer:
-    ingress:
-    - ip: internal-alb-waf-1023017451.us-east-1.elb.amazonaws.com
-```
-
 Put particular `host` from Ingress into `Host` header:
 
 ```
@@ -284,7 +275,7 @@ If the response is not expected go through the following pattern to identify the
 
 If the status is different check the `parentRefs` in the `Route` specification. It must refer to the particular Gateway in correct Namespace and must have correct reference to the linster. The listener must match the Route type. Also check the `backendRefs` correctness. It must go to the Service with active Pods.
 
-2. If the check the Gateway status. The valid status looks like the following:
+2. Check the Gateway status. The valid status looks like the following:
 
 ```yaml
 status:
@@ -311,7 +302,7 @@ status:
 
 The most important message is 'Address assigned to the Gateway'. That means the Gateway has been integrated correctly.
 
-3. If Gateway dosn't have `type: Programmed` check the correcntess of `gatewayClassName` option
+3. If Gateway doesn't have `type: Programmed` check the correctness of `gatewayClassName` option
 
 4. If the `gatewayClassName` refers to correct GatewayClass check the GatewayClass status, e.g.:
 
