@@ -59,80 +59,80 @@ helm install envoy-gateway-cr . -n gateway-system
 The `envoy-gateway` values are specified in the below table.
 
 | Key | Type | Default | Description |
-|-----|------|---------|-------------|
+| ----- | ------ | --------- | ------------- |
 | certgen | object | `{"job":{"affinity":{},"annotations":{},"args":[],"nodeSelector":{},"pod":{"annotations":{},"labels":{}},"resources":{},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsGroup":65532,"runAsNonRoot":true,"runAsUser":65532,"seccompProfile":{"type":"RuntimeDefault"}},"tolerations":[],"ttlSecondsAfterFinished":30},"rbac":{"annotations":{},"labels":{}}}` | Certgen is used to generate the certificates required by EnvoyGateway. If you want to construct a custom certificate, you can generate a custom certificate through Cert-Manager before installing EnvoyGateway. Certgen will not overwrite the custom certificate. Please do not manually modify `values.yaml` to disable certgen, it may cause issues in the expected working of EnvoyGateway OIDC, OAuth2, and so on. |
 | config.envoyGateway | object | `{"extensionApis":{},"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"logging":{"level":{"default":"info"}},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Visit https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway to view all options. |
-| createNamespace | bool | `false` |  |
-| deployment.annotations | object | `{}` |  |
-| deployment.envoyGateway.image.repository | string | `""` |  |
-| deployment.envoyGateway.image.tag | string | `""` |  |
-| deployment.envoyGateway.imagePullPolicy | string | `""` |  |
-| deployment.envoyGateway.imagePullSecrets | list | `[]` |  |
-| deployment.envoyGateway.resources.limits.memory | string | `"1024Mi"` |  |
-| deployment.envoyGateway.resources.requests.cpu | string | `"100m"` |  |
-| deployment.envoyGateway.resources.requests.memory | string | `"256Mi"` |  |
-| deployment.envoyGateway.securityContext.allowPrivilegeEscalation | bool | `false` |  |
-| deployment.envoyGateway.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| deployment.envoyGateway.securityContext.privileged | bool | `false` |  |
-| deployment.envoyGateway.securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| deployment.envoyGateway.securityContext.runAsGroup | int | `65532` |  |
-| deployment.envoyGateway.securityContext.runAsNonRoot | bool | `true` |  |
-| deployment.envoyGateway.securityContext.runAsUser | int | `65532` |  |
-| deployment.envoyGateway.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| deployment.pod.affinity | object | `{}` |  |
-| deployment.pod.annotations."prometheus.io/port" | string | `"19001"` |  |
-| deployment.pod.annotations."prometheus.io/scrape" | string | `"true"` |  |
-| deployment.pod.labels | object | `{}` |  |
-| deployment.pod.nodeSelector | object | `{}` |  |
-| deployment.pod.tolerations | list | `[]` |  |
-| deployment.pod.topologySpreadConstraints | list | `[]` |  |
-| deployment.ports[0].name | string | `"grpc"` |  |
-| deployment.ports[0].port | int | `18000` |  |
-| deployment.ports[0].targetPort | int | `18000` |  |
-| deployment.ports[1].name | string | `"ratelimit"` |  |
-| deployment.ports[1].port | int | `18001` |  |
-| deployment.ports[1].targetPort | int | `18001` |  |
-| deployment.ports[2].name | string | `"wasm"` |  |
-| deployment.ports[2].port | int | `18002` |  |
-| deployment.ports[2].targetPort | int | `18002` |  |
-| deployment.ports[3].name | string | `"metrics"` |  |
-| deployment.ports[3].port | int | `19001` |  |
-| deployment.ports[3].targetPort | int | `19001` |  |
-| deployment.priorityClassName | string | `nil` |  |
-| deployment.replicas | int | `1` |  |
+| createNamespace | bool | `false` | |
+| deployment.annotations | object | `{}` | |
+| deployment.envoyGateway.image.repository | string | `""` | |
+| deployment.envoyGateway.image.tag | string | `""` | |
+| deployment.envoyGateway.imagePullPolicy | string | `""` | |
+| deployment.envoyGateway.imagePullSecrets | list | `[]` | |
+| deployment.envoyGateway.resources.limits.memory | string | `"1024Mi"` | |
+| deployment.envoyGateway.resources.requests.cpu | string | `"100m"` | |
+| deployment.envoyGateway.resources.requests.memory | string | `"256Mi"` | |
+| deployment.envoyGateway.securityContext.allowPrivilegeEscalation | bool | `false` | |
+| deployment.envoyGateway.securityContext.capabilities.drop[0] | string | `"ALL"` | |
+| deployment.envoyGateway.securityContext.privileged | bool | `false` | |
+| deployment.envoyGateway.securityContext.readOnlyRootFilesystem | bool | `true` | |
+| deployment.envoyGateway.securityContext.runAsGroup | int | `65532` | |
+| deployment.envoyGateway.securityContext.runAsNonRoot | bool | `true` | |
+| deployment.envoyGateway.securityContext.runAsUser | int | `65532` | |
+| deployment.envoyGateway.securityContext.seccompProfile.type | string | `"RuntimeDefault"` | |
+| deployment.pod.affinity | object | `{}` | |
+| deployment.pod.annotations."prometheus.io/port" | string | `"19001"` | |
+| deployment.pod.annotations."prometheus.io/scrape" | string | `"true"` | |
+| deployment.pod.labels | object | `{}` | |
+| deployment.pod.nodeSelector | object | `{}` | |
+| deployment.pod.tolerations | list | `[]` | |
+| deployment.pod.topologySpreadConstraints | list | `[]` | |
+| deployment.ports[0].name | string | `"grpc"` | |
+| deployment.ports[0].port | int | `18000` | |
+| deployment.ports[0].targetPort | int | `18000` | |
+| deployment.ports[1].name | string | `"ratelimit"` | |
+| deployment.ports[1].port | int | `18001` | |
+| deployment.ports[1].targetPort | int | `18001` | |
+| deployment.ports[2].name | string | `"wasm"` | |
+| deployment.ports[2].port | int | `18002` | |
+| deployment.ports[2].targetPort | int | `18002` | |
+| deployment.ports[3].name | string | `"metrics"` | |
+| deployment.ports[3].port | int | `19001` | |
+| deployment.ports[3].targetPort | int | `19001` | |
+| deployment.priorityClassName | string | `nil` | |
+| deployment.replicas | int | `1` | |
 | global.imagePullSecrets | list | `[]` | Global override for image pull secrets |
 | global.imageRegistry | string | `""` | Global override for image registry |
-| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.7.3` |  |
-| global.images.envoyGateway.pullPolicy | string | `IfNotPresent` |  |
-| global.images.envoyGateway.pullSecrets | list | `[]` |  |
-| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:05c08d03"` |  |
-| global.images.ratelimit.pullPolicy | string | `"IfNotPresent"` |  |
-| global.images.ratelimit.pullSecrets | list | `[]` |  |
-| hpa.behavior | object | `{}` |  |
-| hpa.enabled | bool | `false` |  |
-| hpa.maxReplicas | int | `1` |  |
-| hpa.metrics | list | `[]` |  |
-| hpa.minReplicas | int | `1` |  |
-| kubernetesClusterDomain | string | `"cluster.local"` |  |
-| podDisruptionBudget.minAvailable | int | `0` |  |
-| service.annotations | object | `{}` |  |
-| service.trafficDistribution | string | `""` |  |
-| topologyInjector.annotations | object | `{}` |  |
-| topologyInjector.enabled | bool | `true` |  |
+| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.7.3` | |
+| global.images.envoyGateway.pullPolicy | string | `IfNotPresent` | |
+| global.images.envoyGateway.pullSecrets | list | `[]` | |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:05c08d03"` | |
+| global.images.ratelimit.pullPolicy | string | `"IfNotPresent"` | |
+| global.images.ratelimit.pullSecrets | list | `[]` | |
+| hpa.behavior | object | `{}` | |
+| hpa.enabled | bool | `false` | |
+| hpa.maxReplicas | int | `1` | |
+| hpa.metrics | list | `[]` | |
+| hpa.minReplicas | int | `1` | |
+| kubernetesClusterDomain | string | `"cluster.local"` | |
+| podDisruptionBudget.minAvailable | int | `0` | |
+| service.annotations | object | `{}` | |
+| service.trafficDistribution | string | `""` | |
+| topologyInjector.annotations | object | `{}` | |
+| topologyInjector.enabled | bool | `true` | |
 
 ### `envoy-gateway-cr` Chart Values
 
 The `envoy-gateway-cr` values are specified in the below table.
 
 | Key | Type | Default | Description |
-|-----|------|---------|-------------|
+| ----- | ------ | --------- | ------------- |
 | gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
 | defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}`       | Describes default (`internal` and `external`) Gateways |
 | upgradeJob | object | `{"pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
-| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.3"` |  |
-| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.2"` |  |
-| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:05c08d03"` |  |
-| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"` |  |
+| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.3"` | |
+| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.2"` | |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:05c08d03"` | |
+| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"` | |
 | config.envoyGateway | object | `{"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Must be equal to `envoy-gateway` values.yaml |
 
 
@@ -169,7 +169,7 @@ defaultGateways:
   external:
     tls:
       - name: tls-1
-        port: 4443
+        port: 443
         hostname: namespace-3.cluster.example
         namespaceLabel:
           kubernetes.io/metadata.name: namespace-3
@@ -386,7 +386,7 @@ The implementation steps are specified below.
 2. Set `defaultGateways.external.proxyProtocol` to  `false`.
 3. Set the `gatewayClasses.external.ingress.create` option to `true`. The `alb.ingress.kubernetes.io/certificate-arn` annotation enables HTTPS and points to a TLS certificate ARN that could be taken from AWS Certificate Manager, set it. The `gatewayClasses.external.ingress` section should be like the following:
 
-```
+```yaml
     ingress:
       create: true
       name: alb

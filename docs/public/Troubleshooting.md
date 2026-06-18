@@ -136,7 +136,7 @@ status:
 
 Put particular `host` from Ingress into `Host` header:
 
-```
+```shell
 $ curl -v -H "Host: test.service.envoy-gateway" http://internal-alb-waf-1023017451.us-east-1.elb.amazonaws.com
 *   Trying 10.10.0.1:80...
 * Connected to internal-alb-waf-1023017451.us-east-1.elb.amazonaws.com (10.10.0.1) port 80 (#0)
@@ -227,7 +227,7 @@ The more specific checks depend on particular application and could be performed
 
 The TFTP endpoint could be check in the following manner:
 
-```
+```shell
 $ curl tftp://udp.endpoint.domain.local:6969/hello-world
 
 Hostname: echoserver-udp-567b76c8b8-lkv5g
