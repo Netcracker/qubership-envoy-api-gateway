@@ -1,4 +1,4 @@
-# Troubleshooting guide 
+# Troubleshooting guide
 
 ## Installation Check
 
@@ -106,7 +106,7 @@ spec:
 
 Put it into `Host` header:
 
-```
+```shell
 $ curl -v -H "Host: test.service.envoy-gateway" http://gateway.k8s.local
 *   Trying 10.10.0.1:80...
 * Connected to gateway.k8s.local (10.10.0.1) port 80 (#0)
@@ -318,7 +318,7 @@ status:
 
 ```
 
-If there is not `type: Accepted` check the `parametersRef` and correct it: 
+If there is not `type: Accepted` check the `parametersRef` and correct it:
 
 ```yaml
   parametersRef:

@@ -61,7 +61,7 @@ The `envoy-gateway` values are specified in the below table.
 | Key | Type | Default | Description |
 | ----- | ------ | --------- | ------------- |
 | certgen | object | `{"job":{"affinity":{},"annotations":{},"args":[],"nodeSelector":{},"pod":{"annotations":{},"labels":{}},"resources":{},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsGroup":65532,"runAsNonRoot":true,"runAsUser":65532,"seccompProfile":{"type":"RuntimeDefault"}},"tolerations":[],"ttlSecondsAfterFinished":30},"rbac":{"annotations":{},"labels":{}}}` | Certgen is used to generate the certificates required by EnvoyGateway. If you want to construct a custom certificate, you can generate a custom certificate through Cert-Manager before installing EnvoyGateway. Certgen will not overwrite the custom certificate. Please do not manually modify `values.yaml` to disable certgen, it may cause issues in the expected working of EnvoyGateway OIDC, OAuth2, and so on. |
-| config.envoyGateway | object | `{"extensionApis":{},"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"logging":{"level":{"default":"info"}},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Visit https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway to view all options. |
+| config.envoyGateway | object | `{"extensionApis":{},"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"logging":{"level":{"default":"info"}},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Visit [](https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway) to view all options. |
 | createNamespace | bool | `false` | |
 | deployment.annotations | object | `{}` | |
 | deployment.envoyGateway.image.repository | string | `""` | |
@@ -127,7 +127,7 @@ The `envoy-gateway-cr` values are specified in the below table.
 | Key | Type | Default | Description |
 | ----- | ------ | --------- | ------------- |
 | gatewayClasses | object | `{"internal": {"name": "internal","envoyProxy": {"name": "internal","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "ClusterIP","name": "","externalTrafficPolicy": "Local"}},"external": {"name": "external","envoyProxy": {"name": "external","logging": "warn"},"envoyDeployment": {"daemonset": "false","replicas": 1,"resources": {"requests": {"cpu": "150m","memory": "640Mi"},"limits": {"cpu": "500m","memory": "1Gi"}},"securityContext": {"allowPrivilegeEscalation": false,"capabilities": {"drop": ["ALL"]},"readOnlyRootFilesystem": true,"runAsNonRoot": true,"seccompProfile": {"type": "RuntimeDefault"}},"tmpSizeLimit": "100Mi"},"envoyService": {"type": "LoadBalancer","name": "","externalTrafficPolicy": "Local"},"ingress": {"create": false,"name": "alb","annotations": {"kubernetes.io/ingress.class": "alb","alb.ingress.kubernetes.io/load-balancer-name": "alb","alb.ingress.kubernetes.io/scheme": "internal","alb.ingress.kubernetes.io/target-type": "ip","alb.ingress.kubernetes.io/healthcheck-port": "19002","alb.ingress.kubernetes.io/healthcheck-path": "/healthz"}}}}` | Describes default (`internal` and `external`) GatewayClasses |
-| defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}`       | Describes default (`internal` and `external`) Gateways |
+| defaultGateways | object | `{"internal":{"name":"default-internal-gateway","httpPort":80,"httpsPort":"","secret":{"create":false,"name":"internal-certificate"}},"external":{"name":"default-external-gateway","proxyProtocol":true,"underscoresAction":"RejectRequest","ctpName":"enable-proxy-protocol","ctpSpec":{},"httpPort":80,"httpsPort":"","secret":{"create":false,"name":"external-certificate"},"tcp":[],"udp":[],"hostPorts":"false"}}` | Describes default (`internal` and `external`) Gateways |
 | upgradeJob | object | `{"pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
 | global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.7.3"` | |
 | global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.37.2"` | |
@@ -239,7 +239,7 @@ defaultGateways:
 
 #### Deployments and DaemonSets
 
-It's possible to use `DaemonSets` instead of `Deployments` resources for Envoy processes. 
+It's possible to use `DaemonSets` instead of `Deployments` resources for Envoy processes.
 
 If the options are set as the following:
 
@@ -255,7 +255,7 @@ gatewayClasses:
 
 the `DaemonSets` will be created:
 
-```
+```shell
 $ kubectl -n gateway-system get daemonset
 NAME                                                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 envoy-envoy-gateway-default-external-gateway-11a05f95   3         3         2       3            2           <none>          33s
@@ -376,7 +376,8 @@ The information for AWS Application Load Balancer (ALB) integration for Envoy AP
 
 ### Problem Statement
 
-AWS as a public cloud provider has Web Application Firewall (WAF) in its services scope. It could be attached to ALB only. The [aws-load-balancer-controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller) creates ALBonly for `Ingress` resources. This makes it impossible to send the traffic to Envoy Gateway directly, since it uses only `Services` and aws-load-balancer-controller creates Network Load Balancer (NLB) in that case. To solve this problem, it is necessary to change the type of related `Service` and create `Ingress` that points to Envoy Gateway `Service`. After that measures, NLB gets destroyed and ALB will be created.
+AWS as a public cloud provider has Web Application Firewall (WAF) in its services scope. It could be attached to ALB only. The [aws-load-balancer-controller](https://github.com/kubernetes-sigs/aws-load-balancer-controller) creates ALBonly for `Ingress` resources. This makes it impossible to send the traffic to Envoy Gateway
+directly, since it uses only `Services` and aws-load-balancer-controller creates Network Load Balancer (NLB) in that case. To solve this problem, it is necessary to change the type of related `Service` and create `Ingress` that points to Envoy Gateway `Service`. After that measures, NLB gets destroyed and ALB will be created.
 
 ### Implementation Steps
 
@@ -408,7 +409,7 @@ The implementation steps are specified below.
 All components ship with hardened security defaults out of the box. The following settings are applied uniformly across the Envoy Gateway controller deployment, the certgen Job, the pre-upgrade Job, and every Envoy proxy container:
 
 | Setting | Value | Scope |
-|---------|-------|-------|
+| --------- | ------- | ------- |
 | `runAsNonRoot` | `true` | pod & container |
 | `allowPrivilegeEscalation` | `false` | container |
 | `readOnlyRootFilesystem` | `true` | container |
