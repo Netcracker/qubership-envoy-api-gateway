@@ -4,11 +4,11 @@ APPLICATION_NAME: envoy-api-gateway
 global:
   images:
     envoy:
-      image: "envoyproxy/envoy:distroless-v1.37.2"
+      image: "envoyproxy/envoy:distroless-v1.37.3"
     envoyGateway:
-      image: "envoyproxy/gateway:v1.7.3"
+      image: "envoyproxy/gateway:v1.7.4"
     ratelimit:
-      image: "envoyproxy/ratelimit:05c08d03"
+      image: "envoyproxy/ratelimit:b8d893f3"
     kubectl:
       image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
 gateway-helm:
