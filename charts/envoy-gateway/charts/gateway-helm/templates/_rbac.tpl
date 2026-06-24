@@ -124,6 +124,7 @@ resources:
 - tlsroutes
 - udproutes
 - backendtlspolicies
+- listenersets {{/* # NC modified */}}
 verbs:
 - get
 - list
@@ -141,6 +142,7 @@ resources:
 - tlsroutes/status
 - udproutes/status
 - backendtlspolicies/status
+- listenersets/status {{/* # NC modified */}}
 verbs:
 - update
 {{- end }}
@@ -226,6 +228,7 @@ verbs:
   - create
   - get
   - list
+  - watch {{/* # NC modified */}}
   - delete
   - deletecollection
   - patch
