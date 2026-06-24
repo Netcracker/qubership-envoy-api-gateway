@@ -133,6 +133,10 @@ gateway-helm:
     rbac:
       annotations: {}
       labels: {}
+  crds:
+    gatewayAPI:
+      safeUpgradePolicy:
+        enabled: true
 
 defaultGateways:
   internal:
