@@ -151,6 +151,25 @@
                                     "type": "object",
                                     "description": "Annotations added to the certgen job"
                                 },
+                                "args": {
+                                    "type": "array",
+                                    "description": "Extra arguments passed to the certgen container",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "pod": {
+                                    "type": "object",
+                                    "description": "Pod-level metadata for the certgen job",
+                                    "properties": {
+                                        "annotations": {
+                                            "type": "object"
+                                        },
+                                        "labels": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
                                 "nodeSelector": {
                                     "type": "object",
                                     "description": "Node selector for the certgen job pod"
@@ -202,6 +221,10 @@
                         }
                     }
                 },
+                "commonLabels": {
+                    "type": "object",
+                    "description": "Labels applied to all resources created by the subchart"
+                },
                 "config": {
                     "type": "object",
                     "description": "Envoy Gateway controller configuration",
@@ -251,9 +274,37 @@
                     "type": "boolean",
                     "description": "Whether the subchart should create the gateway namespace"
                 },
+                "namespaceOverride": {
+                    "type": "string",
+                    "description": "Override the namespace for all resources; defaults to the release namespace"
+                },
+                "crds": {
+                    "type": "object",
+                    "description": "CRD sub-chart configuration",
+                    "properties": {
+                        "gatewayAPI": {
+                            "type": "object",
+                            "properties": {
+                                "safeUpgradePolicy": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "type": "boolean",
+                                            "description": "Install the Gateway API safe-upgrade ValidatingAdmissionPolicy and binding"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "deployment": {
                     "type": "object",
                     "properties": {
+                        "annotations": {
+                            "type": "object",
+                            "description": "Annotations added to the gateway controller Deployment"
+                        },
                         "envoyGateway": {
                             "type": "object",
                             "description": "Gateway controller container configuration",
@@ -279,6 +330,13 @@
                                 "imagePullSecrets": {
                                     "type": "array",
                                     "description": "Image pull secrets for the gateway controller container"
+                                },
+                                "extraEnv": {
+                                    "type": "array",
+                                    "description": "Additional environment variables injected into the gateway controller container",
+                                    "items": {
+                                        "type": "object"
+                                    }
                                 },
                                 "resources": {
                                     "type": "object",
@@ -341,6 +399,20 @@
                                 "topologySpreadConstraints": {
                                     "type": "array",
                                     "description": "Topology spread constraints for the gateway controller pod"
+                                },
+                                "extraVolumeMounts": {
+                                    "type": "array",
+                                    "description": "Additional volume mounts for the gateway controller container",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                },
+                                "extraVolumes": {
+                                    "type": "array",
+                                    "description": "Additional volumes added to the gateway controller pod",
+                                    "items": {
+                                        "type": "object"
+                                    }
                                 }
                             }
                         },
@@ -382,6 +454,17 @@
                     "type": "object",
                     "description": "Subchart-level image and RBAC configuration",
                     "properties": {
+                        "imageRegistry": {
+                            "type": "string",
+                            "description": "Global registry prefix overriding all image references"
+                        },
+                        "imagePullSecrets": {
+                            "type": "array",
+                            "description": "Global image pull secrets applied to all pods",
+                            "items": {
+                                "type": "object"
+                            }
+                        },
                         "images": {
                             "type": "object",
                             "properties": {
@@ -416,6 +499,24 @@
                                             "type": "array"
                                         }
                                     }
+                                },
+                                "envoyProxy": {
+                                    "type": "object",
+                                    "description": "Image override for Envoy proxy instances managed by the controller",
+                                    "properties": {
+                                        "image": {
+                                            "type": "string",
+                                            "description": "Full envoy proxy image reference; overrides the default used by managed EnvoyProxy resources"
+                                        },
+                                        "pullPolicy": {
+                                            "type": "string",
+                                            "description": "Image pull policy for envoy proxy instances",
+                                            "enum": ["Always", "IfNotPresent", "Never", ""]
+                                        },
+                                        "pullSecrets": {
+                                            "type": "array"
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -427,6 +528,37 @@
                                     "description": "Whether to create ClusterRole and ClusterRoleBinding resources"
                                 }
                             }
+                        }
+                    }
+                },
+                "hpa": {
+                    "type": "object",
+                    "description": "HorizontalPodAutoscaler for the gateway controller Deployment",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable HPA; when true, deployment.replicas is ignored"
+                        },
+                        "minReplicas": {
+                            "type": "integer",
+                            "description": "Minimum replica count",
+                            "minimum": 1
+                        },
+                        "maxReplicas": {
+                            "type": "integer",
+                            "description": "Maximum replica count",
+                            "minimum": 1
+                        },
+                        "metrics": {
+                            "type": "array",
+                            "description": "HPA metric sources",
+                            "items": {
+                                "type": "object"
+                            }
+                        },
+                        "behavior": {
+                            "type": "object",
+                            "description": "HPA scaling behavior policy"
                         }
                     }
                 },
@@ -442,6 +574,11 @@
                             "type": "integer",
                             "description": "Minimum number of available pods during disruptions",
                             "minimum": 0
+                        },
+                        "maxUnavailable": {
+                            "type": "integer",
+                            "description": "Maximum number of unavailable pods during disruptions",
+                            "minimum": 0
                         }
                     }
                 },
@@ -452,6 +589,29 @@
                         "annotations": {
                             "type": "object",
                             "description": "Annotations added to the gateway controller Service"
+                        },
+                        "type": {
+                            "type": "string",
+                            "description": "Service type for the gateway controller",
+                            "enum": ["ClusterIP", "NodePort", "LoadBalancer"]
+                        },
+                        "trafficDistribution": {
+                            "type": "string",
+                            "description": "Traffic distribution hint (e.g. PreferClose)"
+                        }
+                    }
+                },
+                "topologyInjector": {
+                    "type": "object",
+                    "description": "Topology-aware proxy scheduling webhook",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable the topology injector MutatingWebhook"
+                        },
+                        "annotations": {
+                            "type": "object",
+                            "description": "Annotations added to the MutatingWebhookConfiguration"
                         }
                     }
                 }

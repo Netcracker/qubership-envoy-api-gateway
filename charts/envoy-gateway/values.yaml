@@ -15,6 +15,10 @@ gateway-helm:
   # The global settings for the Envoy Gateway Helm chart.
   # These values will be used if the values are not overridden in the other sections.
   global:
+    # Global override for image registry; takes precedence over all image-specific registries.
+    imageRegistry: ""
+    # Global override for image pull secrets.
+    imagePullSecrets: []
     images:
       envoyGateway:
         # This is the full image name including the hub, repo, and tag.
@@ -32,20 +36,30 @@ gateway-helm:
         pullPolicy: IfNotPresent
         # List of secrets in the same namespace of the component that can be used to pull images from private repositories.
         pullSecrets: []
+      envoyProxy:
+        # Override the Envoy proxy image used by managed EnvoyProxy instances.
+        image: ""
+        pullPolicy: ""
+        pullSecrets: []
     # The ClusterRole and ClusterRoleBinding must be created or not
     rbac:
       create: true
+
+  commonLabels: {}
+
   podDisruptionBudget:
     minAvailable: 0
     # maxUnavailable: 1
 
   deployment:
+    annotations: {}
     envoyGateway:
       image:
         repository: ""
         tag: ""
       imagePullPolicy: ""
       imagePullSecrets: []
+      extraEnv: []
       resources:
         limits:
           memory: 1024Mi
@@ -87,9 +101,20 @@ gateway-helm:
       topologySpreadConstraints: []
       tolerations: []
       nodeSelector: {}
+      extraVolumeMounts: []
+      extraVolumes: []
 
   service:
+    trafficDistribution: ""
     annotations: {}
+    type: "ClusterIP"
+
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    metrics: []
+    behavior: {}
 
   config:
     envoyGateway:
@@ -102,6 +127,7 @@ gateway-helm:
           default: info
 
   createNamespace: false
+  namespaceOverride: ""
 
   kubernetesClusterDomain: cluster.local
 
@@ -109,6 +135,10 @@ gateway-helm:
   certgen:
     job:
       annotations: {}
+      args: []
+      pod:
+        annotations: {}
+        labels: {}
       resources:
         requests:
           cpu: 100m
@@ -133,6 +163,11 @@ gateway-helm:
     rbac:
       annotations: {}
       labels: {}
+
+  topologyInjector:
+    enabled: true
+    annotations: {}
+
   crds:
     gatewayAPI:
       safeUpgradePolicy:
