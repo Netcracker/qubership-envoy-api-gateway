@@ -7,10 +7,10 @@ global:
       image: "envoyproxy/gateway:v1.8.1"
     # Envoy image
     envoy:
-      image: "envoyproxy/envoy:distroless-v1.37.2"
+      image: "envoyproxy/envoy:distroless-v1.38.1"
     ratelimit:
       # This is the full image name including the hub, repo, and tag.
-      image: "envoyproxy/ratelimit:05c08d03"
+      image: "envoyproxy/ratelimit:fe26676d"
     kubectl:
       image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
 # Default GatewayClass and EnvoyProxy specification
@@ -101,7 +101,7 @@ gatewayClasses:
         alb.ingress.kubernetes.io/healthcheck-port: '19002'
         alb.ingress.kubernetes.io/healthcheck-path: /healthz
         # Put the correct certificate ARN to enable HTTPS and uncomment the following line
-        #alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:xxxxx:certificate/xxxxxxx
+        # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:xxxxx:certificate/xxxxxxx
 
 defaultGateways:
   internal:
@@ -114,9 +114,9 @@ defaultGateways:
       create: false
       name: internal-certificate
       # Certificate in Base64 enconing
-      #crt: ""
+      # crt: ""
       # Private key in Base64 enconing
-      #key: ""
+      # key: ""
     # Additional annotations
     annotations: {}
     # Additional labels
@@ -139,34 +139,34 @@ defaultGateways:
       create: false
       name: external-certificate
       # Certificate in Base64 enconing
-      #crt: ""
+      # crt: ""
       # Private key in Base64 enconing
-      #key: ""
+      # key: ""
     # TCP listeners list e.g.:
-    #tcp:
-    #  - name: sftp
-    #    # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
-    #    namespaceLabel:
-    #      kubernetes.io/metadata.name: namespace-1
-    #    port: 2222
+    # tcp:
+    #   - name: sftp
+    #     # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
+    #     namespaceLabel:
+    #       kubernetes.io/metadata.name: namespace-1
+    #     port: 2222
     tcp: []
     # UDP listeners list e.g.:
-    #udp:
-    #  - name: tftp
-    #    # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
-    #    namespaceLabel:
-    #      kubernetes.io/metadata.name: namespace-2
-    #    port: 6969
+    # udp:
+    #   - name: tftp
+    #     # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
+    #     namespaceLabel:
+    #       kubernetes.io/metadata.name: namespace-2
+    #     port: 6969
     udp: []
     # TLS Passthrough listeners list e.g.:
-    #tls:
-    #  - name: tls-1
-    #    # Port must differ from `httpsPort` above
-    #    port: 4443
-    #    hostname: namespace-3.cluster.example
-    #    # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
-    #    namespaceLabel:
-    #      kubernetes.io/metadata.name: namespace-3
+    # tls:
+    #   - name: tls-1
+    #     # Port must differ from `httpsPort` above
+    #     port: 4443
+    #     hostname: namespace-3.cluster.example
+    #     # It could be `key: value` notation or `All` string to allow routes from all of the namespaces
+    #     namespaceLabel:
+    #       kubernetes.io/metadata.name: namespace-3
     tls: []
     # Use `hostPort` on Envoy pods. By default, host ports are the same as listener ports,
     # except when listener port is lower than 1000, in this case default hostPort will be listener port plus 10000.

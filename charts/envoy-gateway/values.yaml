@@ -4,11 +4,11 @@ APPLICATION_NAME: envoy-api-gateway
 global:
   images:
     envoy:
-      image: "envoyproxy/envoy:distroless-v1.37.2"
+      image: "envoyproxy/envoy:distroless-v1.38.1"
     envoyGateway:
       image: "envoyproxy/gateway:v1.8.1"
     ratelimit:
-      image: "envoyproxy/ratelimit:05c08d03"
+      image: "envoyproxy/ratelimit:ff287602"
     kubectl:
       image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.8"
 gateway-helm:
@@ -26,7 +26,7 @@ gateway-helm:
         pullSecrets: []
       ratelimit:
         # This is the full image name including the hub, repo, and tag.
-        image: "envoyproxy/ratelimit:05c08d03"
+        image: "envoyproxy/ratelimit:ff287602"
         # Specify image pull policy if default behavior isn't desired.
         # Default behavior: latest images will be Always else IfNotPresent.
         pullPolicy: IfNotPresent
