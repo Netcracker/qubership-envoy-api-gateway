@@ -1,5 +1,7 @@
 # Installation Guide
 
+This guide provides information on the installation procedure for Envoy API Gateway.
+
 ## Installation Prerequisites
 
 The installation prerequisites are listed below.
