@@ -1,4 +1,6 @@
-# Troubleshooting guide
+# Troubleshooting Guide
+
+This guide provides information on troubleshooting checks while working with Envoy Gateway Operator.
 
 ## Installation Check
 
