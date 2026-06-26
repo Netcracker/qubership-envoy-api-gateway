@@ -15,7 +15,11 @@ metadata:
   {{- end }}
   {{- include "eg.labels" . | nindent 4 }}
 spec:
+  {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
   gatewayClassName: {{ .Values.gatewayClasses.external.name }}
+  {{- else }}
+  gatewayClassName: openshift.io/gateway-controller/v1
+  {{- end }}
   listeners:
     - allowedRoutes:
         namespaces:
@@ -98,6 +102,7 @@ spec:
     {{- end }}
     {{- end }}
 ---
+{{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
@@ -116,6 +121,7 @@ spec:
     group: gateway.networking.k8s.io
     kind: Gateway
     name: {{ .Values.defaultGateways.external.name }}
+{{- end }}
 ---
 {{- if and .Values.defaultGateways.external.httpsPort .Values.defaultGateways.external.secret.create }}
 apiVersion: v1
@@ -150,7 +156,11 @@ metadata:
   {{- end }}
   {{- include "eg.labels" . | nindent 4 }}
 spec:
-  gatewayClassName: {{ .Values.gatewayClasses.internal.name }}
+  {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
+  gatewayClassName: {{ .Values.gatewayClasses.external.name }}
+  {{- else }}
+  gatewayClassName: openshift.io/gateway-controller/v1
+  {{- end }}
   listeners:
     - allowedRoutes:
         namespaces:

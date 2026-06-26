@@ -9,11 +9,13 @@ metadata:
   {{- include "eg.labels" . | nindent 4 }}
 spec:
   controllerName: {{ index .Values "config" "envoyGateway" "gateway" "controllerName" }}
+  {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
   parametersRef:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
     name: {{ .Values.gatewayClasses.internal.envoyProxy.name }}
     namespace: {{ .Release.Namespace }}
+  {{- end }}
 {{- end }}
 ---
 {{- if .Values.gatewayClasses.external }}
@@ -27,9 +29,11 @@ metadata:
   {{- include "eg.labels" . | nindent 4 }}
 spec:
   controllerName: {{ index .Values "config" "envoyGateway" "gateway" "controllerName" }}
+  {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
   parametersRef:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
     name: {{ .Values.gatewayClasses.external.envoyProxy.name }}
     namespace: {{ .Release.Namespace }}
+  {{- end }}
 {{- end }}
