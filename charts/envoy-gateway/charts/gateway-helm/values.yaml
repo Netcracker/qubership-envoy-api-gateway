@@ -16,7 +16,7 @@ global:
   images:
     envoyGateway:
       # This is the full image name including the hub, repo, and tag.
-      image: envoyproxy/gateway:v1.7.3       # NC modified
+      image: envoyproxy/gateway:v1.8.1       # NC modified
       # Specify image pull policy if default behavior isn't desired.
       # Default behavior: latest images will be Always else IfNotPresent.
       pullPolicy: IfNotPresent               # NC modified
@@ -30,6 +30,12 @@ global:
       pullPolicy: IfNotPresent
       # List of secrets in the same namespace of the component that can be used to pull images from private repositories.
       pullSecrets: []
+    envoyProxy:
+      image: ""
+      pullPolicy: ""
+      pullSecrets: []
+
+commonLabels: {}
 
 podDisruptionBudget:
   minAvailable: 0
@@ -44,6 +50,7 @@ deployment:
       tag: ""
     imagePullPolicy: ""
     imagePullSecrets: []
+    extraEnv: []
     resources:
       limits:
         memory: 1024Mi
@@ -86,6 +93,8 @@ deployment:
     topologySpreadConstraints: []
     tolerations: []
     nodeSelector: {}
+    extraVolumeMounts: []
+    extraVolumes: []
 
 service:
   # If set to PreferClose, the Envoy fleet will prioritize connecting to the Envoy Gateway pods that are topologically closest to them.
@@ -116,6 +125,7 @@ config:
     extensionApis: {}
 
 createNamespace: false
+namespaceOverride: ""
 
 kubernetesClusterDomain: cluster.local
 

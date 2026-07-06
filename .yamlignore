@@ -1,3 +1,4 @@
 **/charts/envoy-gateway/templates/**
 **/charts/envoy-gateway/charts/gateway-helm/templates/**
+**/charts/envoy-gateway/charts/gateway-helm/charts/crds/templates/**
 **/charts/envoy-gateway-cr/templates/**

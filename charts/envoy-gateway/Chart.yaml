@@ -8,5 +8,5 @@ appVersion: "latest"
 dependencies:
   # Community Envoy Gateway
   - name: gateway-helm
-    version: v1.7.1
+    version: v1.8.1
     repository: "file://charts/gateway-helm"
