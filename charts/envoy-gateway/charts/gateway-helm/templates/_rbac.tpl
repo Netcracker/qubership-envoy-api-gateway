@@ -255,6 +255,7 @@ verbs:
   - delete
   - deletecollection
   - patch
+  - watch
 - apiGroups:
   - policy
   resources:
@@ -266,6 +267,7 @@ verbs:
   - delete
   - deletecollection
   - patch
+  - watch
 {{/* # NC modified end*/}}
 - apiGroups:
   - certificates.k8s.io
