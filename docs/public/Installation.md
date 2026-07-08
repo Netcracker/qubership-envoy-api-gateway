@@ -392,9 +392,27 @@ envoy-envoy-gateway-default-external-gateway-11a05f95   3         3         2   
 envoy-envoy-gateway-default-internal-gateway-f9db644f   3         3         2       3            2           <n
 ```
 
-#### Service Annotations
+#### Service Naming and Annotations
 
-The `Services` that are being created during `Gateways` reconciliation could have custom annotations. It's useful in public clouds installations, e.g.:
+The `Services` that are being created during `Gateways` reconciliation has randomized name e.g.:
+
+```shell
+$ kubectl -n gateway-system get svc | grep 'gateway-system'
+envoy-gateway-system-default-external-gateway-6069cdbe   ClusterIP      172.30.11.71     <none>        80:32285/TCP                                       14d
+envoy-gateway-system-default-internal-gateway-0bc2c140   ClusterIP      172.30.173.43    <none>        80/TCP                                             14d
+```
+
+When it's needed to refer to the `Service` its name could be set like the following:
+
+```yaml
+gatewayClasses:
+  internal:
+    name: external
+    envoyService:
+      name: "external"
+```
+
+Also `Service` could have custom annotations. It's useful in public clouds installations, e.g.:
 
 ```yaml
 gatewayClasses:
