@@ -389,7 +389,7 @@ the `DaemonSets` will be created:
 $ kubectl -n gateway-system get daemonset
 NAME                                                    DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 envoy-envoy-gateway-default-external-gateway-11a05f95   3         3         2       3            2           <none>          33s
-envoy-envoy-gateway-default-internal-gateway-f9db644f   3         3         2       3            2           <n
+envoy-envoy-gateway-default-internal-gateway-f9db644f   3         3         2       3            2           <none>          33s
 ```
 
 #### Service Annotations
