@@ -194,7 +194,7 @@ The default Envoy Gateway configuration.
 {{- $envoyProxyBase := .Values.config.envoyGateway.envoyProxy | default dict }}
 {{- $imageOverride := dict }}
 {{- if .Values.global.images.envoyProxy.image }}
-  {{- $container := dict "image" ( template "find_image" (dict "deployName" "envoy" "SERVICE_NAME" "envoy" "vals" .Values "default" (include "eg.envoyProxy.image" . ))) }} {{/* # NC modified */}}
+  {{- $container := dict "image" ( include "find_image" (dict "deployName" "envoy" "SERVICE_NAME" "envoy" "vals" .Values "default" (include "eg.envoyProxy.image" . ))) }} {{/* # NC modified */}}
   {{- if .Values.global.images.envoyProxy.pullPolicy }}
     {{- $_ := set $container "imagePullPolicy" .Values.global.images.envoyProxy.pullPolicy }}
   {{- end }}
