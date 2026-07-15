@@ -58,7 +58,7 @@ spec:
                     - name: tmp
                       mountPath: /tmp
         container:
-          image: {{ include "envoy.image" . }}
+          image: {{ template "find_image" (dict "deployName" "envoy" "SERVICE_NAME" "envoy" "vals" .Values "default" (include "envoy.image" . )) }}
           resources:
             {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.resources | nindent 12 }}
           {{- if .Values.gatewayClasses.internal.envoyDeployment.securityContext }}
@@ -198,7 +198,7 @@ spec:
           {{- end }}
         {{- end }}
         container:
-          image: {{ include "envoy.image" . }}
+          image: {{ template "find_image" (dict "deployName" "envoy" "SERVICE_NAME" "envoy" "vals" .Values "default" (include "envoy.image" . )) }}
           resources:
             {{- toYaml .Values.gatewayClasses.external.envoyDeployment.resources | nindent 12 }}
           {{- if .Values.gatewayClasses.external.envoyDeployment.securityContext }}
