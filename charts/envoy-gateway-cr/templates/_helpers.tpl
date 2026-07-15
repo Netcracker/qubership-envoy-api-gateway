@@ -164,3 +164,17 @@ Kubectl image.
 ghcr.io/netcracker/qubership-docker-kubectl:0.0.7
 {{- end -}}
 {{- end -}}
+
+{{- define "find_image" -}}
+  {{- $image := .default -}}
+
+  {{- if .vals.global.deployDescriptor -}}
+    {{- if index .vals.global.deployDescriptor .deployName -}}
+      {{- $image = (index .vals.global.deployDescriptor .deployName "image") -}}
+    {{- else if index .vals.global.deployDescriptor .SERVICE_NAME -}}
+        {{- $image = (index .vals.global.deployDescriptor .SERVICE_NAME "image") -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{ printf "%s" $image }}
+{{- end -}}

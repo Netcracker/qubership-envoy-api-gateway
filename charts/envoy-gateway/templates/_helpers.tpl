@@ -110,7 +110,7 @@ provider:
   kubernetes:
     rateLimitDeployment:
       container:
-        image: {{ include "eg.ratelimit.image" . }}
+        image: {{ template "find_image" (dict "deployName" "ratelimit" "SERVICE_NAME" "ratelimit" "vals" .Values "default" (include "eg.ratelimit.image" . )) }} {{/* # NC modified */}}
       {{- with .Values.global.images.ratelimit.pullSecrets }}
       pod:
         imagePullSecrets:
@@ -128,7 +128,7 @@ provider:
                   imagePullPolicy: {{ . }}
       {{- end }}
     shutdownManager:
-      image: {{ include "eg.image" . }}
+      image: {{ template "find_image" (dict "deployName" "envoy-gateway-image" "SERVICE_NAME" "envoy-gateway-image" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
 {{- end }}
 
 {{/*
@@ -151,4 +151,18 @@ Kubectl image.
 {{- else -}}
 ghcr.io/netcracker/qubership-docker-kubectl:0.0.8
 {{- end -}}
+{{- end -}}
+
+{{- define "find_image" -}}
+  {{- $image := .default -}}
+
+  {{- if .vals.global.deployDescriptor -}}
+    {{- if index .vals.global.deployDescriptor .deployName -}}
+      {{- $image = (index .vals.global.deployDescriptor .deployName "image") -}}
+    {{- else if index .vals.global.deployDescriptor .SERVICE_NAME -}}
+        {{- $image = (index .vals.global.deployDescriptor .SERVICE_NAME "image") -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{ printf "%s" $image }}
 {{- end -}}

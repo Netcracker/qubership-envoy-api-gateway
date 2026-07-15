@@ -194,7 +194,7 @@ The default Envoy Gateway configuration.
 {{- $envoyProxyBase := .Values.config.envoyGateway.envoyProxy | default dict }}
 {{- $imageOverride := dict }}
 {{- if .Values.global.images.envoyProxy.image }}
-  {{- $container := dict "image" (include "eg.envoyProxy.image" .) }}
+  {{- $container := dict "image" ( include "find_image" (dict "deployName" "envoy" "SERVICE_NAME" "envoy" "vals" .Values "default" (include "eg.envoyProxy.image" . ))) }} {{/* # NC modified */}}
   {{- if .Values.global.images.envoyProxy.pullPolicy }}
     {{- $_ := set $container "imagePullPolicy" .Values.global.images.envoyProxy.pullPolicy }}
   {{- end }}
@@ -217,7 +217,7 @@ provider:
   kubernetes:
     rateLimitDeployment:
       container:
-        image: {{ include "eg.ratelimit.image" . }}
+        image: {{ template "find_image" (dict "deployName" "ratelimit" "SERVICE_NAME" "ratelimit" "vals" .Values "default" (include "eg.ratelimit.image" . )) }} {{/* # NC modified */}}
       {{- if (or .Values.global.imagePullSecrets .Values.global.images.ratelimit.pullSecrets) }}
       pod:
         {{- include "eg.ratelimit.image.pullSecrets" . | nindent 8 }}
@@ -234,7 +234,7 @@ provider:
                   imagePullPolicy: {{ . }}
       {{- end }}
     shutdownManager:
-      image: {{ include "eg.image" . }}
+      image: {{ template "find_image" (dict "deployName" "envoy-gateway-image" "SERVICE_NAME" "envoy-gateway-image" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
 {{- with .Values.config.envoyGateway.extensionApis }}
 extensionApis:
   {{- toYaml . | nindent 2 }}
@@ -244,3 +244,23 @@ proxyTopologyInjector:
   disabled: true
 {{- end }}
 {{- end }}
+
+{{/*
+# NC modified START
+*/}}
+{{- define "find_image" -}}
+  {{- $image := .default -}}
+
+  {{- if .vals.global.deployDescriptor -}}
+    {{- if index .vals.global.deployDescriptor .deployName -}}
+      {{- $image = (index .vals.global.deployDescriptor .deployName "image") -}}
+    {{- else if index .vals.global.deployDescriptor .SERVICE_NAME -}}
+        {{- $image = (index .vals.global.deployDescriptor .SERVICE_NAME "image") -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{ printf "%s" $image }}
+{{- end -}}
+{{/*
+# NC modified END
+*/}}

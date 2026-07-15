@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: create
-          image: {{ include "kubectl.image" . }}
+          image: {{ template "find_image" (dict "deployName" "kubectl" "SERVICE_NAME" "kubectl" "vals" .Values "default" (include "kubectl.image" . )) }}
           imagePullPolicy: {{ .Values.upgradeJob.pullPolicy }}
           env:
             - name: POD_NAMESPACE

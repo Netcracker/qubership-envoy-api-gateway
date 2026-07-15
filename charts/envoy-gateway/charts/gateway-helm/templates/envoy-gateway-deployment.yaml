@@ -70,7 +70,7 @@ spec:
         {{- with .Values.deployment.envoyGateway.extraEnv }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        image: {{ include "eg.image" . }}
+        image: {{ template "find_image" (dict "deployName" "envoy-gateway-image" "SERVICE_NAME" "envoy-gateway-image" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
         imagePullPolicy: {{ include "eg.image.pullPolicy" . }}
         livenessProbe:
           httpGet:
