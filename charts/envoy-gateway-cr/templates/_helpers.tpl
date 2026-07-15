@@ -167,12 +167,6 @@ ghcr.io/netcracker/qubership-docker-kubectl:0.0.7
 
 {{/*
 # NC modified START
-Find Docker image in Different Places
-Dictionary with:
-1. "deployName" - deploy-param from description.yaml
-2. "SERVICE_NAME" - name of service with git group and git repo
-3. "vals" - .Values
-4.  "default" - default docker image
 */}}
 {{- define "find_image" -}}
   {{- $image := .default -}}
