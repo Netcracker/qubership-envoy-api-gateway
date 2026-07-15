@@ -110,7 +110,7 @@ provider:
   kubernetes:
     rateLimitDeployment:
       container:
-        image: {{ include "eg.ratelimit.image" . }}
+        image: {{ template "find_image" (dict "deployName" "ratelimit" "SERVICE_NAME" "ratelimit" "vals" .Values "default" (include "eg.ratelimit.image" . )) }} {{/* # NC modified */}}
       {{- with .Values.global.images.ratelimit.pullSecrets }}
       pod:
         imagePullSecrets:
@@ -128,7 +128,7 @@ provider:
                   imagePullPolicy: {{ . }}
       {{- end }}
     shutdownManager:
-      image: {{ include "eg.image" . }}
+      image: {{ template "find_image" (dict "deployName" "envoy-gateway" "SERVICE_NAME" "envoy-gateway" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
 {{- end }}
 
 {{/*
