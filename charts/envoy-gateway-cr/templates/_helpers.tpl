@@ -165,9 +165,6 @@ ghcr.io/netcracker/qubership-docker-kubectl:0.0.7
 {{- end -}}
 {{- end -}}
 
-{{/*
-# NC modified START
-*/}}
 {{- define "find_image" -}}
   {{- $image := .default -}}
 
@@ -181,6 +178,3 @@ ghcr.io/netcracker/qubership-docker-kubectl:0.0.7
 
   {{ printf "%s" $image }}
 {{- end -}}
-{{/*
-# NC modified END
-*/}}
