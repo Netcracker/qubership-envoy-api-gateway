@@ -54,7 +54,7 @@ spec:
               fieldPath: metadata.namespace
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ .Values.kubernetesClusterDomain }}
-        image: {{ template "find_image" (dict "deployName" "envoy-gateway" "SERVICE_NAME" "envoy-gateway" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
+        image: {{ template "find_image" (dict "deployName" "envoy-gateway-image" "SERVICE_NAME" "envoy-gateway-image" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
         imagePullPolicy: {{ include "eg.image.pullPolicy" . }}
         name: envoy-gateway-certgen
         {{- with .Values.certgen.job.resources }}

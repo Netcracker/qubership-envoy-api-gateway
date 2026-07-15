@@ -234,7 +234,7 @@ provider:
                   imagePullPolicy: {{ . }}
       {{- end }}
     shutdownManager:
-      image: {{ template "find_image" (dict "deployName" "envoy-gateway" "SERVICE_NAME" "envoy-gateway" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
+      image: {{ template "find_image" (dict "deployName" "envoy-gateway-image" "SERVICE_NAME" "envoy-gateway-image" "vals" .Values "default" (include "eg.image" . )) }} {{/* # NC modified */}}
 {{- with .Values.config.envoyGateway.extensionApis }}
 extensionApis:
   {{- toYaml . | nindent 2 }}
