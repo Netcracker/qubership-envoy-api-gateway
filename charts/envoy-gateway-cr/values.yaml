@@ -38,6 +38,8 @@ gatewayClasses:
             - "ALL"
         readOnlyRootFilesystem: true
         runAsNonRoot: true
+        runAsGroup: 65532
+        runAsUser: 65532
         seccompProfile:
           type: RuntimeDefault
       tmpSizeLimit: 100Mi
@@ -72,6 +74,8 @@ gatewayClasses:
             - "ALL"
         readOnlyRootFilesystem: true
         runAsNonRoot: true
+        runAsGroup: 65532
+        runAsUser: 65532
         seccompProfile:
           type: RuntimeDefault
       tmpSizeLimit: 100Mi
