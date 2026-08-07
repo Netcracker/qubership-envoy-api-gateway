@@ -555,7 +555,20 @@ config:
       controllerName: openshift.io/gateway-controller/v1
 ```
 
-It makes OCP gateway controller watch the GatewayClass and attached API Gateway resources
+It makes OCP gateway controller watch the GatewayClass and attached API Gateway resources. Also it's necessary to disable internal GatewayClass (the rest of the options of the internal GatewayClass must be commented):
+
+```yaml
+gatewayClasses:
+  internal: {}
+```
+
+and disable internal Gateway:
+
+```yaml
+defaultGateways:
+  internal:
+    enabled: false
+```
 
 ## AWS Application Load Balancer (ALB) Integration
 
