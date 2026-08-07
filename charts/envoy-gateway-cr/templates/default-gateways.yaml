@@ -152,7 +152,7 @@ metadata:
   {{- end }}
   {{- include "eg.labels" . | nindent 4 }}
 spec:
-  gatewayClassName: {{ .Values.gatewayClasses.external.name }}
+  gatewayClassName: {{ .Values.gatewayClasses.internal.name }}
   listeners:
     - allowedRoutes:
         namespaces:
