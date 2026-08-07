@@ -15,11 +15,7 @@ metadata:
   {{- end }}
   {{- include "eg.labels" . | nindent 4 }}
 spec:
-  {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
   gatewayClassName: {{ .Values.gatewayClasses.external.name }}
-  {{- else }}
-  gatewayClassName: openshift.io/gateway-controller/v1
-  {{- end }}
   listeners:
     - allowedRoutes:
         namespaces:
@@ -156,11 +152,7 @@ metadata:
   {{- end }}
   {{- include "eg.labels" . | nindent 4 }}
 spec:
-  {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
   gatewayClassName: {{ .Values.gatewayClasses.external.name }}
-  {{- else }}
-  gatewayClassName: openshift.io/gateway-controller/v1
-  {{- end }}
   listeners:
     - allowedRoutes:
         namespaces:

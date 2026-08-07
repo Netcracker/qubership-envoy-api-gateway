@@ -217,7 +217,7 @@ upgradeJob:
 config:
   envoyGateway:
     gateway:
-      # controllerName will be automaticaly set to openshift.io/gateway-controller/v1 in case of OpenShift
+      # controllerName must be set to openshift.io/gateway-controller/v1 in case of OpenShift installation
       controllerName: gateway.envoyproxy.io/gatewayclass-controller
     provider:
       type: Kubernetes

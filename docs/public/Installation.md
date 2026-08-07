@@ -9,7 +9,7 @@ The installation prerequisites are listed below.
 * Kubernetes cluster version 1.29+
 * Cluster admin permissions
 
-**Warning**: Currently, OCP4 is not supported due to the changes in OCP4.19. The Envoy Gateway usage on OCP4 previous to 4.19 leads to complete Envoy Gateway removal during the upgrade from 4.18 to 4.19. Check RedHat documentation for more information.
+**Warning**: Currently, OCP4 is supported from v4.22 and higher. Check [OCP Support](#ocp-support) article
 
 ## Charts Structure
 
@@ -541,6 +541,21 @@ gatewayClasses:
   external:
     name: external-2
 ```
+
+## OCP Support
+
+OCP clusters from v4.19 and higher have their own Gateway API CRDs out of the box. Therefore on OCP cluster
+ must be installed only envoy-gateway-cr chart. Pay attention the `controllerName` must be set explicitly
+ to the value that applicable to OCP:
+
+```yaml
+config:
+  envoyGateway:
+    gateway:
+      controllerName: openshift.io/gateway-controller/v1
+```
+
+It makes OCP gateway controller watch the GatewayClass and attached API Gateway resources
 
 ## AWS Application Load Balancer (ALB) Integration
 
