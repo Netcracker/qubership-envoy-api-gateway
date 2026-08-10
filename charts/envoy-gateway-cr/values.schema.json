@@ -512,6 +512,14 @@
                         "labels": {
                             "type": "object",
                             "description": "Additional labels added to the Gateway resource"
+                        },
+                        "btpName": {
+                            "type": "string",
+                            "description": "Name of the BackendTrafficPolicy resource"
+                        },
+                        "btpSpec": {
+                            "type": "object",
+                            "description": "BackendTrafficPolicy spec section; rendered verbatim into the resource spec"
                         }
                     }
                 }
