@@ -180,6 +180,19 @@ defaultGateways:
     annotations: {}
     # Additional labels
     labels: {}
+    # Name of BackendTrafficPolicy resource
+    btpName: default-backend-traffic-policy
+    # BackendTrafficPolicy `spec` section.
+    btpSpec:
+      timeout:
+        tcp:
+          # Timeout for TCP connect
+          connectTimeout: 60s
+        http:
+          # Total duration for complete response, 0s disables the timeout
+          requestTimeout: 0s
+          # Idle timeout for HTTP streams
+          streamIdleTimeout: 60s
 
 upgradeJob:
   pullPolicy: IfNotPresent

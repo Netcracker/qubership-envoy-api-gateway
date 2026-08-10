@@ -367,6 +367,30 @@ defaultGateways:
 
 **Note**: Only one ClientTrafficPolicy could be attached to particular Gateway, so if the you are going to use some custom ClientTrafficPolicy the default one must be deleted
 
+#### BackendTrafficPolicy
+
+The [BackendTrafficPolicy](https://gateway.envoyproxy.io/docs/api/extension_types/#backendtrafficpolicy) configures the behavior of connections between Envoy Proxy and backend services. A single policy is created by default and attached to the external Gateways. Basically, it makes external Gateway works similar to the Ingress Nginx.
+
+Default configuration:
+
+```yaml
+defaultGateways:
+  external:
+    btpName: default-backend-traffic-policy
+    btpSpec:
+      timeout:
+        tcp:
+          connectTimeout: 60s
+        http:
+          requestTimeout: 0s
+          streamIdleTimeout: 60s
+```
+
+* `btpName` sets the name of the resource.
+* `btpSpec` sets the full `BackendTrafficPolicy` [spec](https://gateway.envoyproxy.io/docs/api/extension_types/#backendtrafficpolicyspec).
+
+**Note**: Only one BackendTrafficPolicy can be attached to a particular Gateway at a time.
+
 #### Deployments and DaemonSets
 
 It's possible to use `DaemonSets` instead of `Deployments` resources for Envoy processes.
