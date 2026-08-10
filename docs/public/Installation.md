@@ -369,7 +369,7 @@ defaultGateways:
 
 #### BackendTrafficPolicy
 
-The [BackendTrafficPolicy](https://gateway.envoyproxy.io/docs/api/extension_types/#backendtrafficpolicy) configures the behavior of connections between Envoy Proxy and backend services. A single policy is created by default and attached to the external Gateways.
+The [BackendTrafficPolicy](https://gateway.envoyproxy.io/docs/api/extension_types/#backendtrafficpolicy) configures the behavior of connections between Envoy Proxy and backend services. A single policy is created by default and attached to the external Gateways. Basically, it makes external Gateway works similar to the Ingress Nginx.
 
 Default configuration:
 
