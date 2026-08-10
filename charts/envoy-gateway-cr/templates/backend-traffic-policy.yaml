@@ -11,8 +11,3 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: {{ .Values.defaultGateways.external.name }}
-    {{- if .Values.defaultGateways.internal.enabled }}
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: {{ .Values.defaultGateways.internal.name }}
-    {{- end }}
