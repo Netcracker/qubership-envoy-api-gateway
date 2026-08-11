@@ -1,4 +1,5 @@
 {{- if not (.Capabilities.APIVersions.Has "config.openshift.io/v1") }}
+{{- if .Values.gatewayClasses.internal }}
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
@@ -67,6 +68,7 @@ spec:
             {{- toYaml .Values.gatewayClasses.internal.envoyDeployment.securityContext | nindent 12 }}
           {{- end }}
     type: {{ index .Values "config" "envoyGateway" "provider" "type" }}
+{{- end }}
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
