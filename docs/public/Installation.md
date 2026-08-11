@@ -544,9 +544,9 @@ gatewayClasses:
 
 ## OCP Support
 
-OCP clusters from v4.19 and higher have their own Gateway API CRDs out of the box. Therefore on OCP cluster
- must be installed only envoy-gateway-cr chart. Pay attention the `controllerName` must be set explicitly
- to the value that applicable to OCP:
+OCP clusters version **v4.19** and newer include the Gateway API CRDs by default. Consequently, on an OCP cluster you should install **only** the `envoy-gateway-cr` chart.
+
+**Important:** Set the `controllerName` explicitly to the OCP‑specific value:
 
 ```yaml
 config:
@@ -555,14 +555,16 @@ config:
       controllerName: openshift.io/gateway-controller/v1
 ```
 
-It makes OCP gateway controller watch the GatewayClass and attached API Gateway resources. Also it's necessary to disable internal GatewayClass (the rest of the options of the internal GatewayClass must be commented):
+This configuration tells the OCP gateway controller to watch the `GatewayClass` and the associated API Gateway resources.
+
+Additionally, the internal `GatewayClass` must be disabled (the remaining fields for the internal `GatewayClass` should be commented out):
 
 ```yaml
 gatewayClasses:
   internal: {}
 ```
 
-and disable internal Gateway:
+and the internal Gateway itself must be disabled:
 
 ```yaml
 defaultGateways:
