@@ -160,13 +160,17 @@
                                 },
                                 "pod": {
                                     "type": "object",
-                                    "description": "Pod-level metadata for the certgen job",
+                                    "description": "Pod-level metadata and security for the certgen job",
                                     "properties": {
                                         "annotations": {
                                             "type": "object"
                                         },
                                         "labels": {
                                             "type": "object"
+                                        },
+                                        "securityContext": {
+                                            "$ref": "#/$defs/containerSecurityContext",
+                                            "description": "Pod-level security context for the certgen job pod"
                                         }
                                     }
                                 },
@@ -282,6 +286,10 @@
                     "type": "object",
                     "description": "CRD sub-chart configuration",
                     "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "description": "Enable or disable CRD installation via the crds sub-chart"
+                        },
                         "gatewayAPI": {
                             "type": "object",
                             "properties": {
@@ -337,6 +345,26 @@
                                     "items": {
                                         "type": "object"
                                     }
+                                },
+                                "strategy": {
+                                    "type": "object",
+                                    "description": "Rolling update strategy for the gateway controller Deployment"
+                                },
+                                "wasmCacheVolume": {
+                                    "type": "object",
+                                    "description": "Custom volume definition for the Wasm module cache; defaults to emptyDir when empty"
+                                },
+                                "startupProbe": {
+                                    "type": "object",
+                                    "description": "Startup probe configuration for the gateway controller container"
+                                },
+                                "livenessProbe": {
+                                    "type": "object",
+                                    "description": "Liveness probe configuration for the gateway controller container"
+                                },
+                                "readinessProbe": {
+                                    "type": "object",
+                                    "description": "Readiness probe configuration for the gateway controller container"
                                 },
                                 "resources": {
                                     "type": "object",
@@ -399,6 +427,10 @@
                                 "topologySpreadConstraints": {
                                     "type": "array",
                                     "description": "Topology spread constraints for the gateway controller pod"
+                                },
+                                "securityContext": {
+                                    "$ref": "#/$defs/containerSecurityContext",
+                                    "description": "Pod-level security context for the gateway controller pod"
                                 },
                                 "extraVolumeMounts": {
                                     "type": "array",
