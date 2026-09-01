@@ -26,10 +26,11 @@ spec:
         {{- toYaml .Values.certgen.job.pod.annotations | nindent 8 -}}
       {{- end }}
     spec:
-      securityContext:  {{/* # NC modified */}}
-        runAsNonRoot: true  {{/* # NC modified */}}
-        seccompProfile:  {{/* # NC modified */}}
-          type: RuntimeDefault  {{/* # NC modified */}}
+      automountServiceAccountToken: true
+      {{- with .Values.certgen.job.pod.securityContext }}  {{/* # NC modified */}}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       {{- $args := .Values.certgen.job.args }}
       {{- if not .Values.topologyInjector.enabled }}
