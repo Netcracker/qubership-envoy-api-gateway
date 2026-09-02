@@ -53,6 +53,10 @@ spec:
                     emptyDir:
                       sizeLimit: {{ .Values.gatewayClasses.internal.envoyDeployment.tmpSizeLimit }}
                   containers:
+                  - name: shutdown-manager
+                    volumeMounts:
+                    - name: tmp
+                      mountPath: /tmp
                   - name: envoy
                     volumeMounts:
                     - name: tmp
@@ -133,6 +137,10 @@ spec:
                     emptyDir:
                       sizeLimit: {{ .Values.gatewayClasses.external.envoyDeployment.tmpSizeLimit }}
                   containers:
+                  - name: shutdown-manager
+                    volumeMounts:
+                    - name: tmp
+                      mountPath: /tmp
                   - name: envoy
                     volumeMounts:
                     - name: tmp
