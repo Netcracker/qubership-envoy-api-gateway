@@ -104,10 +104,10 @@ The `envoy-gateway` values are specified in the below table.
 | deployment.replicas | int | `1` | |
 | global.imagePullSecrets | list | `[]` | Global override for image pull secrets |
 | global.imageRegistry | string | `""` | Global override for image registry |
-| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.9.0` | |
+| global.images.envoyGateway.image | string | `envoyproxy/gateway:v1.9.1` | |
 | global.images.envoyGateway.pullPolicy | string | `IfNotPresent` | |
 | global.images.envoyGateway.pullSecrets | list | `[]` | |
-| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:17b1956c"` | |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:8fe6ea42"` | |
 | global.images.ratelimit.pullPolicy | string | `"IfNotPresent"` | |
 | global.images.ratelimit.pullSecrets | list | `[]` | |
 | hpa.behavior | object | `{}` | |
@@ -159,9 +159,9 @@ The `envoy-gateway-cr` values are specified in the below table.
 | gatewayClasses | object | See the example below | Describes default (`internal` and `external`) GatewayClasses |
 | defaultGateways | object | See the example below | Describes default (`internal` and `external`) Gateways |
 | upgradeJob | object | `{"pullPolicy":"IfNotPresent","resources":{"requests":{"cpu":"100m","memory":"128Mi"}},"nodeSelector":{"kubernetes.io/os":"linux"},"tolerations":[],"securityContext":{"runAsNonRoot":true,"allowPrivilegeEscalation":false,"readOnlyRootFilesystem":true,"capabilities":{"drop":["ALL"]},"seccompProfile":{"type":"RuntimeDefault"}}}` | Describes pre-upgrade job properties |
-| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.9.0"` | |
-| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.39.0"` | |
-| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:17b1956c"` | |
+| global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.9.1"` | |
+| global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.39.1"` | |
+| global.images.ratelimit.image | string | `"envoyproxy/ratelimit:8fe6ea42"` | |
 | global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"` | |
 | config.envoyGateway | object | `{"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Must be equal to `envoy-gateway` values.yaml |
 
