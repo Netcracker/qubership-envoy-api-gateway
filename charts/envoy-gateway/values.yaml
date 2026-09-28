@@ -10,7 +10,7 @@ global:
     ratelimit:
       image: "envoyproxy/ratelimit:8fe6ea42"
     kubectl:
-      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"
+      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.10"
 gateway-helm:
   # The global settings for the Envoy Gateway Helm chart.
   # These values will be used if the values are not overridden in the other sections.
@@ -181,7 +181,7 @@ defaultGateways:
     ctpName: enable-proxy-protocol
 
 upgradeJob:
-  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"
+  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.10"
   pullPolicy: IfNotPresent
   resources:
     requests:

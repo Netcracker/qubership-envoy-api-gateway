@@ -162,7 +162,7 @@ The `envoy-gateway-cr` values are specified in the below table.
 | global.images.envoyGateway.image | string | `"envoyproxy/gateway:v1.9.1"` | |
 | global.images.envoy.image | string | `"envoyproxy/envoy:distroless-v1.39.1"` | |
 | global.images.ratelimit.image | string | `"envoyproxy/ratelimit:8fe6ea42"` | |
-| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"` | |
+| global.images.kubectl.image | string | `"ghcr.io/netcracker/qubership-docker-kubectl:0.0.10"` | |
 | config.envoyGateway | object | `{"gateway":{"controllerName":"gateway.envoyproxy.io/gatewayclass-controller"},"provider":{"type":"Kubernetes"}}` | EnvoyGateway configuration. Must be equal to `envoy-gateway` values.yaml |
 
 **`gatewayClasses` default value:**

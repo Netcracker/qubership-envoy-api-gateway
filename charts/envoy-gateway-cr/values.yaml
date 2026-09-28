@@ -12,7 +12,7 @@ global:
       # This is the full image name including the hub, repo, and tag.
       image: "envoyproxy/ratelimit:8fe6ea42"
     kubectl:
-      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"
+      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.10"
 # Default GatewayClass and EnvoyProxy specification
 gatewayClasses:
   internal:
@@ -226,7 +226,7 @@ config:
       type: Kubernetes
 
 fixJob:
-  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"
+  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.10"
   pullPolicy: IfNotPresent
   resources:
     requests:
