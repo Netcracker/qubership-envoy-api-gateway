@@ -14,10 +14,10 @@ spec:
 {{- if not .Values.hpa.enabled }}
   replicas: {{ .Values.deployment.replicas }}
 {{- end }}
-  {{- with .Values.deployment.envoyGateway.strategy }}
+{{- with .Values.deployment.envoyGateway.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+{{- end }}
   selector:
     matchLabels:
       control-plane: envoy-gateway
@@ -126,6 +126,8 @@ spec:
       - name: certs
         secret:
           secretName: envoy-gateway
+      # Writable cache for Wasm modules; required because the controller's
+      # root filesystem is read-only by default (readOnlyRootFilesystem).
       - name: wasm-cache
         {{- with .Values.deployment.envoyGateway.wasmCacheVolume }}
         {{- toYaml . | nindent 8 }}

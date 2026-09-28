@@ -139,7 +139,7 @@ The name of the Envoy Ratelimit image.
 {{-   $repositoryTag := $imageParts._1 -}}
 {{-   $repositoryParts := splitn ":" 2 $repositoryTag -}}
 {{-   $repositoryName := $repositoryParts._0 -}}
-{{-   $imageTag := default "master" $repositoryParts._1 -}}
+{{-   $imageTag := default "8fe6ea42" $repositoryParts._1 -}}
 {{-   printf "%s/%s:%s" $registryName $repositoryName $imageTag -}}
 {{- end -}}
 
@@ -163,11 +163,12 @@ Resolve the Envoy Proxy image.
 */}}
 {{- define "eg.envoyProxy.image" -}}
 {{-   $imageParts := splitn "/" 2 .Values.global.images.envoyProxy.image -}}
+{{/*    if global.imageRegistry is defined, it takes precedence always */}}
 {{-   $registryName := default $imageParts._0 .Values.global.imageRegistry -}}
 {{-   $repositoryTag := $imageParts._1 -}}
 {{-   $repositoryParts := splitn ":" 2 $repositoryTag -}}
 {{-   $repositoryName := $repositoryParts._0 -}}
-{{-   $imageTag := default "distroless-v1.39.0" $repositoryParts._1 -}}
+{{-   $imageTag := default "distroless-v1.39.1" $repositoryParts._1 -}}
 {{-   printf "%s/%s:%s" $registryName $repositoryName $imageTag -}}
 {{- end -}}
 

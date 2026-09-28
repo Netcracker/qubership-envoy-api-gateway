@@ -18,6 +18,8 @@ metadata:
   creationTimestamp: null
   name: {{ include "eg.fullname" $ }}-envoy-gateway-role
   namespace: {{ $ns | quote }}
+  labels:
+  {{- include "eg.labels" $ | nindent 4 }}
 rules:
 {{ include "eg.rbac.namespaced" $ }}
 ---
@@ -26,6 +28,8 @@ kind: RoleBinding
 metadata:
   name: {{ include "eg.fullname" $ }}-envoy-gateway-rolebinding
   namespace: {{ $ns | quote }}
+  labels:
+  {{- include "eg.labels" $ | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
