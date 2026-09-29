@@ -52,15 +52,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 6 }}
       {{- end }}
-      securityContext:  {{/* # NC modified START */}}
-        {{- with .Values.deployment.pod.securityContext }}
+      {{- with .Values.deployment.pod.securityContext }}
+      securityContext:
         {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- if eq (default "" .Values.PAAS_PLATFORM) "KUBERNETES" }}
-        runAsUser: 1000  {{/* # NC modified */}}
-        runAsGroup: 1000  {{/* # NC modified */}}
-        {{- end }}
-      {{/* # NC modified END */}}
+      {{- end }}
       containers:
       - args:
         - server
@@ -71,6 +66,13 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
+        - name: ENVOY_GATEWAY_SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.serviceAccountName
+        - name: ENVOY_GATEWAY_FULLNAME
+          value: {{ include "eg.fullname" . }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ .Values.kubernetesClusterDomain }}
         {{- with .Values.deployment.envoyGateway.extraEnv }}
