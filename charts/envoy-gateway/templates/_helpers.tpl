@@ -149,7 +149,7 @@ Kubectl image.
 {{- if .Values.global.images.kubectl.image -}}
 {{- .Values.global.images.kubectl.image }}
 {{- else -}}
-ghcr.io/netcracker/qubership-docker-kubectl:0.0.8
+ghcr.io/netcracker/qubership-docker-kubectl:0.0.11
 {{- end -}}
 {{- end -}}
 

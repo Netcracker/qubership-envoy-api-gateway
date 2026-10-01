@@ -1,30 +1,25 @@
 apiVersion: v2
-name: gateway-helm
-description: The Helm chart for Envoy Gateway
-type: application
-
-version: v1.9.0  # NC modified
-appVersion: "latest"
-icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
-
-maintainers:
-  - name: envoy-gateway-steering-committee
-    url: https://github.com/envoyproxy/gateway/blob/main/GOVERNANCE.md
-  - name: envoy-gateway-maintainers
-    url: https://github.com/envoyproxy/gateway/blob/main/CODEOWNERS
-
-keywords:
-  - gateway-api
-  - envoyproxy
-  - envoy-gateway
-  - eg
-
-home: https://gateway.envoyproxy.io/
-
-sources:
-  - https://github.com/envoyproxy/gateway
-
+appVersion: v1.9.2
 dependencies:
-  - name: crds
-    version: "0.0.0"
-    condition: crds.enabled
+- condition: crds.enabled
+  name: crds
+  repository: ""
+  version: 0.0.0
+description: The Helm chart for Envoy Gateway
+home: https://gateway.envoyproxy.io/
+icon: https://raw.githubusercontent.com/envoyproxy/gateway/main/site/assets/icons/logo.svg
+keywords:
+- gateway-api
+- envoyproxy
+- envoy-gateway
+- eg
+maintainers:
+- name: envoy-gateway-steering-committee
+  url: https://github.com/envoyproxy/gateway/blob/main/GOVERNANCE.md
+- name: envoy-gateway-maintainers
+  url: https://github.com/envoyproxy/gateway/blob/main/CODEOWNERS
+name: gateway-helm
+sources:
+- https://github.com/envoyproxy/gateway
+type: application
+version: v1.9.2

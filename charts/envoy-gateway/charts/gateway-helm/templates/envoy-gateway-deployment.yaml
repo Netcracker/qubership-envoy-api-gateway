@@ -14,10 +14,10 @@ spec:
 {{- if not .Values.hpa.enabled }}
   replicas: {{ .Values.deployment.replicas }}
 {{- end }}
-  {{- with .Values.deployment.envoyGateway.strategy }}
+{{- with .Values.deployment.envoyGateway.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+{{- end }}
   selector:
     matchLabels:
       control-plane: envoy-gateway
@@ -52,15 +52,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 6 }}
       {{- end }}
-      securityContext:  {{/* # NC modified START */}}
-        {{- with .Values.deployment.pod.securityContext }}
+      {{- with .Values.deployment.pod.securityContext }}
+      securityContext:
         {{- toYaml . | nindent 8 }}
-        {{- end }}
-        {{- if eq (default "" .Values.PAAS_PLATFORM) "KUBERNETES" }}
-        runAsUser: 1000  {{/* # NC modified */}}
-        runAsGroup: 1000  {{/* # NC modified */}}
-        {{- end }}
-      {{/* # NC modified END */}}
+      {{- end }}
       containers:
       - args:
         - server
@@ -71,6 +66,13 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
+        - name: ENVOY_GATEWAY_SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.serviceAccountName
+        - name: ENVOY_GATEWAY_FULLNAME
+          value: {{ include "eg.fullname" . }}
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ .Values.kubernetesClusterDomain }}
         {{- with .Values.deployment.envoyGateway.extraEnv }}
@@ -126,6 +128,8 @@ spec:
       - name: certs
         secret:
           secretName: envoy-gateway
+      # Writable cache for Wasm modules; required because the controller's
+      # root filesystem is read-only by default (readOnlyRootFilesystem).
       - name: wasm-cache
         {{- with .Values.deployment.envoyGateway.wasmCacheVolume }}
         {{- toYaml . | nindent 8 }}

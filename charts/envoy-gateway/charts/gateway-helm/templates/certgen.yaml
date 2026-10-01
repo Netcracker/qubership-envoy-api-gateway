@@ -27,7 +27,7 @@ spec:
       {{- end }}
     spec:
       automountServiceAccountToken: true
-      {{- with .Values.certgen.job.pod.securityContext }}  {{/* # NC modified */}}
+      {{- with .Values.certgen.job.pod.securityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}

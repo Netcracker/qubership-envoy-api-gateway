@@ -4,15 +4,15 @@ APPLICATION_NAME: envoy-api-gateway
 global:
   images:
     envoyGateway:
-      image: "envoyproxy/gateway:v1.9.0"
+      image: "envoyproxy/gateway:v1.9.2"
     # Envoy image
     envoy:
-      image: "envoyproxy/envoy:distroless-v1.39.0"
+      image: "envoyproxy/envoy:distroless-v1.39.1"
     ratelimit:
       # This is the full image name including the hub, repo, and tag.
-      image: "envoyproxy/ratelimit:17b1956c"
+      image: "envoyproxy/ratelimit:0482748e"
     kubectl:
-      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"
+      image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.11"
 # Default GatewayClass and EnvoyProxy specification
 gatewayClasses:
   internal:
@@ -226,7 +226,7 @@ config:
       type: Kubernetes
 
 fixJob:
-  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.9"
+  image: "ghcr.io/netcracker/qubership-docker-kubectl:0.0.11"
   pullPolicy: IfNotPresent
   resources:
     requests:
