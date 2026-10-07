@@ -1,0 +1,12 @@
+name: troubleshoot-envoy-api-gateway
+version: 1.0.0
+description: Skill for troubleshooting envoy-api-gateway issues
+targets:
+- claude
+- copilot
+- cursor
+dependencies:
+  apm: []
+  mcp: []
+includes: auto
+scripts: {}
