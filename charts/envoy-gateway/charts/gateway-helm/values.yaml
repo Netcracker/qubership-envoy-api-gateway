@@ -1,8 +1,3 @@
-# NC modified START
-SERVICE_NAME: envoy-gateway
-MANAGED_BY: saasDeployer
-APPLICATION_NAME: envoy-api-gateway
-# NC modified END
 # Global settings
 global:
   # If set, these take highest precedence and change envoyGateway, envoyProxy, and ratelimit's container registry and pull secrets.
@@ -16,7 +11,7 @@ global:
   images:
     envoyGateway:
       # -- Full image for the Envoy Gateway control plane Deployment installed by this chart.
-      image: envoyproxy/gateway:v1.9.2       # NC modified
+      image: envoyproxy/gateway:v1.9.3       # NC modified
       # -- Image pull policy for the Envoy Gateway control plane Deployment.
       # Default behavior: latest images will be Always else IfNotPresent.
       pullPolicy: IfNotPresent
@@ -24,7 +19,7 @@ global:
       pullSecrets: []
     ratelimit:
       # This is the full image name including the hub, repo, and tag.
-      image: "docker.io/envoyproxy/ratelimit:0482748e"
+      image: "docker.io/envoyproxy/ratelimit:5ae0682e"
       # Specify image pull policy if default behavior isn't desired.
       # Default behavior: latest images will be Always else IfNotPresent.
       pullPolicy: IfNotPresent
