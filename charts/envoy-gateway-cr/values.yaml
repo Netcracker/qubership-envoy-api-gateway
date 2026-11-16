@@ -93,6 +93,10 @@ gatewayClasses:
       name: ""
       externalTrafficPolicy: Local
       annotations: {}
+      # Fixed nodePort for the HTTP listener. Applicable only if `type` is NodePort. 0 means the port is assigned by Kubernetes
+      httpNodePort: 0
+      # Fixed nodePort for the HTTPS listener. Applicable only if `type` is NodePort and `defaultGateways.external.httpsPort` is set. 0 means the port is assigned by Kubernetes
+      httpsNodePort: 0
     # The following section is applicable only for AWS ALB
     ingress:
       create: false

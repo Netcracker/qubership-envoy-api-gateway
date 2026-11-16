@@ -227,6 +227,8 @@ gatewayClasses:
       type: LoadBalancer
       name: ""
       externalTrafficPolicy: Local
+      httpNodePort: 0
+      httpsNodePort: 0
     ingress:
       create: false
       name: alb
@@ -461,6 +463,30 @@ defaultGateways:
 ```
 
 By default, host ports are the same as listener ports, except when listener port is lower than 1000, in this case default hostPort will be listener port plus 10000. It makes `containerPort` and `hostPort` equal. HostPorts doesn't work for `tls` listeners.
+
+#### NodePorts
+
+The external `Gateway` could be exposed as a `NodePort` Service on particular node ports. It's useful when an external load balancer sends traffic to the fixed node ports, because by default node ports are assigned randomly by Kubernetes.
+
+The `values.yaml` part example is as follows:
+
+```yaml
+gatewayClasses:
+  external:
+    envoyService:
+      type: NodePort
+      httpNodePort: 30080
+      httpsNodePort: 30443
+defaultGateways:
+  external:
+    httpPort: 80
+    httpsPort: 443
+```
+
+* `httpNodePort` and `httpsNodePort` are applied only if `type` is `NodePort`. The value `0` means the node port is assigned by Kubernetes.
+* `httpsNodePort` is applied only if the HTTPS listener is enabled (`defaultGateways.external.httpsPort` is not empty).
+* Node ports must be within the cluster node port range (`30000-32767` by default) and must not be used by other `Services`.
+* With the default `externalTrafficPolicy: Local` only the nodes running Envoy pods accept traffic on the node ports.
 
 #### Gateway Configuration
 

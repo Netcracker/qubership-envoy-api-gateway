@@ -250,6 +250,18 @@
                                     "description": "External traffic policy for NodePort/LoadBalancer services",
                                     "enum": ["Cluster", "Local"]
                                 },
+                                "httpNodePort": {
+                                    "type": "integer",
+                                    "description": "Fixed node port for the HTTP listener when type=NodePort; 0 means auto-assigned by Kubernetes",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                },
+                                "httpsNodePort": {
+                                    "type": "integer",
+                                    "description": "Fixed node port for the HTTPS listener when type=NodePort and httpsPort is set; 0 means auto-assigned by Kubernetes",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                },
                                 "annotations": {
                                     "type": "object",
                                     "description": "Annotations added to the Service"
