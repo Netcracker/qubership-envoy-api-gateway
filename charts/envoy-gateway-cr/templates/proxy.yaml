@@ -86,28 +86,44 @@ spec:
       default: {{ .Values.gatewayClasses.external.envoyProxy.logging }}
   provider:
     kubernetes:
+      {{- $svc := .Values.gatewayClasses.external.envoyService }}
+      {{- $gw := .Values.defaultGateways.external }}
+      {{- $isNodePort := eq $svc.type "NodePort" }}
+      {{- $pinHttp := and $isNodePort (int $svc.httpNodePort) }}
+      {{- $pinHttps := and $isNodePort $gw.httpsPort (int $svc.httpsNodePort) }}
       envoyService:
-        {{- if .Values.gatewayClasses.external.envoyService.annotations }}
+        {{- with $svc.annotations }}
         annotations:
-        {{- with .Values.gatewayClasses.external.envoyService.annotations }}
-        {{- toYaml . | nindent 10 }}
-        {{- end }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
         labels:
           {{- include "eg.labels" . | nindent 10 }}
-        {{- if .Values.gatewayClasses.external.envoyService.name }}
-        name: {{ .Values.gatewayClasses.external.envoyService.name }}
+        {{- with $svc.name }}
+        name: {{ . }}
         {{- end }}
-        {{- if eq .Values.gatewayClasses.external.envoyService.type "LoadBalancer" }}
-        {{- if and (hasKey .Values "INFRA_RESTRICTED_ENVIRONMENT") .Values.INFRA_RESTRICTED_ENVIRONMENT }}
+        {{- if and (eq $svc.type "LoadBalancer") (hasKey .Values "INFRA_RESTRICTED_ENVIRONMENT") .Values.INFRA_RESTRICTED_ENVIRONMENT }}
         type: NodePort
         {{- else }}
-        type: {{ .Values.gatewayClasses.external.envoyService.type }}
+        type: {{ $svc.type }}
         {{- end }}
-        {{- else }}
-        type: {{ .Values.gatewayClasses.external.envoyService.type }}
+        externalTrafficPolicy: {{ $svc.externalTrafficPolicy }}
+        {{- if or $pinHttp $pinHttps }}
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+              {{- if $pinHttp }}
+              - name: http-{{ $gw.httpPort }}
+                port: {{ $gw.httpPort }}
+                nodePort: {{ $svc.httpNodePort }}
+              {{- end }}
+              {{- if $pinHttps }}
+              - name: https-{{ $gw.httpsPort }}
+                port: {{ $gw.httpsPort }}
+                nodePort: {{ $svc.httpsNodePort }}
+              {{- end }}
         {{- end }}
-        externalTrafficPolicy: {{ .Values.gatewayClasses.external.envoyService.externalTrafficPolicy }}
       {{- if .Values.gatewayClasses.external.envoyDeployment.daemonset }}
       envoyDaemonSet:
       {{- else }}
