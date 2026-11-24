@@ -1,3 +1,8 @@
+# NC modified START
+SERVICE_NAME: envoy-gateway
+MANAGED_BY: saasDeployer
+APPLICATION_NAME: envoy-api-gateway
+# NC modified END
 # Global settings
 global:
   # If set, these take highest precedence and change envoyGateway, envoyProxy, and ratelimit's container registry and pull secrets.
